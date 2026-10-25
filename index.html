@@ -1,988 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="description" content="INKVERSE — Manga, webtoons, novels & artbooks collected as on-chain ink." />
-<title>INKVERSE — Manga Collectibles on-chain</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INKVERSE — Waitlist</title>
 <style>
-:root{
-  --paper:#f5f0e8; --paper2:#faf8f5; --ink:#1a1a1a; --ink2:#43423e;
-  --muted:#6b6a63; --faint:#98958c; --line:#1a1a1a; --line-soft:#ddd5c5;
-  --sakura:#e8b4c8; --sakura-d:#c988a3; --indigo:#5b6abf; --gold:#d4a843; --gold-d:#9c7a1c;
-  --bad:#a8514a; --mint:#7fd8c8;
-  --radius:14px; --shadow:4px 4px 0 var(--ink);
-  --sans:"Inter",system-ui,sans-serif; --disp:"Space Grotesk",var(--sans); --jp:"Noto Sans JP",sans-serif;
-  --safe-b:env(safe-area-inset-bottom,0px);
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{
-  font-family:var(--sans); background:var(--paper); color:var(--ink);
-  line-height:1.5; overflow-x:hidden; font-size:15px;
-  padding-bottom:calc(84px + var(--safe-b));
-}
-::selection{background:var(--sakura)}
-ja{font-family:var(--jp)}
-.ja{font-family:var(--jp)}
+  :root {
+    --paper: #f5f0e8;
+    --ink: #1a1a1a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ---------- atmosphere overlays ---------- */
-.kanji-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-.tone-overlay{
-  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.5;
-  background-image:radial-gradient(circle,var(--ink) 1px,transparent 1.4px);
-  background-size:5px 5px;opacity:.06;
-}
-.grain-overlay{
-  position:fixed;inset:-50%;z-index:1;pointer-events:none;opacity:.55;
-  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="160" height="160" filter="url(%23n)" opacity="0.14"/></svg>');
-}
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    padding: 2.5rem 1.25rem;
+    position: relative;
+    overflow-x: hidden;
+  }
 
-/* ---------- layout ---------- */
-.page{position:relative;z-index:2;max-width:480px;margin:0 auto;padding:0 16px}
-section{margin-top:56px}
+  /* grain texture */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .4;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.14'/%3E%3C/svg%3E");
+  }
 
-/* ---------- type + shared ---------- */
-.eyebrow{font-family:var(--disp);font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-h2{font-family:var(--disp);font-size:24px;letter-spacing:-.02em;line-height:1.15}
-.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
-.sec-head .seal-row{display:flex;gap:6px;flex-shrink:0}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  font-family:var(--disp);font-weight:700;font-size:15px;
-  border:2px solid var(--ink);border-radius:10px;background:var(--paper2);color:var(--ink);
-  padding:13px 20px;box-shadow:var(--shadow);cursor:pointer;text-decoration:none;
-  transition:transform .12s ease,box-shadow .12s ease,background .12s ease;
-}
-.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
-.btn-primary{background:var(--ink);color:var(--paper2)}
-.btn-mint{background:var(--mint)}
-.btn:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible{outline:3px dashed var(--indigo);outline-offset:3px}
+  /* halftone dots */
+  .halftone {
+    position: fixed;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+    background-size: 8px 8px;
+    opacity: .12;
+    z-index: 0;
+    transform: rotate(12deg);
+  }
 
-.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--bad);animation:pulse 1.6s ease-in-out infinite;flex-shrink:0}
-.dot.ok{background:#3e8f5a;animation-duration:2.4s}
-@keyframes pulse{0%,100%{transform:scale(.7);opacity:.5}50%{transform:scale(1.15);opacity:1}}
-@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+  .kanji {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: clamp(5rem, 18vw, 8rem);
+    line-height: 1;
+    opacity: .07;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
 
-/* reveal on scroll */
-.reveal{opacity:0;transform:translateY(26px) scale(.985);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
-.reveal.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp .7s ease-out both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
 
-/* ---------- HERO ---------- */
-.hero{
-  position:relative;margin-top:14px;border:2px solid var(--ink);border-radius:18px;
-  background:var(--paper2);box-shadow:6px 6px 0 var(--ink);
-  padding:26px 18px 22px;overflow:hidden;transform:rotate(-.6deg);
-}
-.hero::before{
-  content:"";position:absolute;inset:-40%;
-  background:repeating-conic-gradient(from 0deg at 50% 38%,transparent 0deg 4.5deg,rgba(26,26,26,.055) 4.5deg 5deg,transparent 5deg 9deg);
-  pointer-events:none;
-}
-.hero::after{
-  content:"";position:absolute;top:0;left:0;right:0;height:46%;pointer-events:none;
-  background:linear-gradient(180deg,rgba(91,106,191,.14),transparent);
-}
-.hero-badge{position:relative;display:inline-flex;align-items:center;gap:8px;border:2px solid var(--ink);border-radius:999px;background:var(--paper);padding:6px 12px;font-size:12px;font-weight:600;box-shadow:3px 3px 0 var(--ink)}
-.hero-badge .ja{font-size:12px;color:var(--indigo)}
-.glitch-title{
-  position:relative;margin-top:16px;font-family:var(--disp);font-weight:700;
-  font-size:clamp(52px,17vw,72px);letter-spacing:-.03em;line-height:.95;user-select:none;
-}
-.glitch-title::before,.glitch-title::after{
-  content:attr(data-text);position:absolute;inset:0;
-}
-.glitch-title::before{color:var(--sakura-d);text-shadow:-2px 0 var(--sakura-d);animation:glitchA 2.8s infinite steps(1)}
-.glitch-title::after{color:var(--indigo);text-shadow:2px 0 var(--indigo);animation:glitchB 3.4s infinite steps(1)}
-@keyframes glitchA{
-  0%,88%{clip-path:inset(0 0 100% 0);transform:none;opacity:0}
-  89%{clip-path:inset(10% 0 62% 0);transform:translate(-4px,2px);opacity:1}
-  91%{clip-path:inset(56% 0 20% 0);transform:translate(3px,-2px);opacity:1}
-  93%,100%{clip-path:inset(0 0 100% 0);opacity:0}
-}
-@keyframes glitchB{
-  0%,62%{clip-path:inset(0 100% 0 0);transform:none;opacity:0}
-  63%{clip-path:inset(32% 0 44% 0);transform:translate(4px,1px);opacity:1}
-  66%{clip-path:inset(70% 0 8% 0);transform:translate(-3px,2px);opacity:1}
-  69%,100%{clip-path:inset(0 100% 0 0);opacity:0}
-}
-@media (prefers-reduced-motion:reduce){.glitch-title::before,.glitch-title::after{display:none}}
-.hero-kicker{position:relative;margin-top:10px;font-size:14px;color:var(--ink2);max-width:34ch}
-.hero-kicker b{color:var(--ink)}
-.hero-cta{position:relative;display:flex;gap:12px;margin-top:20px}
-.hero-cta .btn{flex:1}
+  .badge {
+    display: inline-block;
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    border: 2px solid var(--ink);
+    padding: .25rem .6rem;
+    box-shadow: 3px 3px 0 var(--ink);
+    margin-bottom: 1.4rem;
+  }
 
-.sfx{position:absolute;font-family:var(--jp);font-weight:900;pointer-events:none;line-height:1}
-.sfx-1{top:10px;right:-4px;font-size:40px;color:var(--ink);transform:rotate(9deg);-webkit-text-stroke:1px var(--paper2);opacity:.92}
-.sfx-2{bottom:78px;right:10px;font-size:20px;color:var(--bad);transform:rotate(-7deg);opacity:.85}
-.sfx-3{top:78px;left:-8px;font-size:16px;color:var(--indigo);transform:rotate(-90deg);opacity:.6}
+  h1 {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+    font-size: clamp(2.6rem, 11vw, 3.4rem);
+    letter-spacing: .04em;
+    line-height: 1;
+    text-shadow: 3px 3px 0 var(--paper), 6px 6px 0 rgba(26,26,26,.18);
+  }
+  .jp {
+    display: block;
+    font-size: .95rem;
+    letter-spacing: .35em;
+    margin-top: .7rem;
+    opacity: .75;
+  }
 
-.bubble{
-  position:relative;display:inline-block;background:var(--paper2);border:2px solid var(--ink);
-  border-radius:14px;padding:8px 12px;font-size:13px;font-weight:600;box-shadow:3px 3px 0 var(--ink);transform:rotate(-2deg)
-}
-.bubble::after{
-  content:"";position:absolute;left:-11px;top:50%;margin-top:-8px;
-  width:14px;height:14px;background:var(--paper2);
-  border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);
-  transform:rotate(45deg);
-}
-.hero-speech{position:relative;margin-top:20px;display:flex;gap:10px;align-items:center}
+  .tagline {
+    margin: 1.3rem 0 0;
+    font-size: 1rem;
+    line-height: 1.55;
+    opacity: .85;
+  }
 
-.ink-splat{position:absolute;width:34px;height:34px;fill:var(--ink);pointer-events:none}
+  .count {
+    margin-top: 1.1rem;
+    font-size: .8rem;
+    letter-spacing: .06em;
+    opacity: .65;
+  }
 
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:22px;position:relative}
-.stat{border:2px solid var(--ink);border-radius:10px;background:var(--paper);padding:10px 6px;text-align:center;box-shadow:3px 3px 0 var(--line-soft)}
-.stat b{display:block;font-family:var(--disp);font-size:17px;letter-spacing:-.02em}
-.stat span{display:block;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+  form {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+  }
 
-/* ---------- seals ---------- */
-.seal{
-  display:inline-grid;place-items:center;width:30px;height:30px;
-  border:2px dashed var(--gold-d);border-radius:8px;color:var(--gold-d);
-  font-family:var(--jp);font-weight:900;font-size:14px;background:rgba(212,168,67,.1);
-  transform:rotate(-4deg);
-}
-.seal:nth-child(2){transform:rotate(3deg);border-color:var(--sakura-d);color:var(--sakura-d);background:rgba(232,180,200,.15)}
-.seal:nth-child(3){transform:rotate(-2deg)}
-.step-seal{width:38px;height:38px;font-size:17px;border-color:var(--indigo);color:var(--indigo);background:rgba(91,106,191,.08)}
+  input[type="email"] {
+    width: 100%;
+    padding: .85rem 1rem;
+    font-size: 1rem;
+    background: #fff;
+    border: 2px solid var(--ink);
+    outline: none;
+  }
+  input[type="email"]:focus { box-shadow: 3px 3px 0 var(--ink); }
 
-/* ---------- categories ---------- */
-.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none;-ms-overflow-style:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{
-  flex:0 0 auto;font-family:var(--disp);font-weight:700;font-size:13px;
-  border:2px solid var(--ink);background:var(--paper2);border-radius:999px;
-  padding:8px 14px;cursor:pointer;box-shadow:3px 3px 0 var(--line);
-  transition:transform .12s ease,box-shadow .12s ease,background .12s ease,color .12s ease;
-  white-space:nowrap;
-}
-.chip:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
-.chip em{font-style:normal;color:var(--faint);margin-left:5px;font-weight:500}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper2)}
-.chip[aria-pressed="true"] em{color:var(--faint)}
+  button {
+    padding: .85rem 1rem;
+    font-size: .95rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    box-shadow: 5px 5px 0 rgba(26,26,26,.25);
+    transition: box-shadow .12s ease, transform .12s ease;
+  }
+  button:hover { box-shadow: 2px 2px 0 rgba(26,26,26,.25); transform: translate(3px, 3px); }
+  button:active { box-shadow: none; transform: translate(5px, 5px); }
 
-/* ---------- cards / covers ---------- */
-.card{
-  background:var(--paper2);border:2px solid var(--ink);border-radius:var(--radius);
-  box-shadow:var(--shadow);overflow:hidden;
-}
-.cover{
-  display:grid;place-items:center;position:relative;height:150px;
-  font-family:var(--jp);font-weight:900;color:var(--paper2);
-  text-shadow:2px 2px 0 var(--ink);
-}
-.cover .tone{
-  position:absolute;inset:0;opacity:.18;pointer-events:none;
-  background-image:radial-gradient(circle,#fff 1.2px,transparent 1.6px);background-size:6px 6px;
-}
-.cover .kanji{font-size:64px;position:relative}
-.cover small{position:absolute;left:8px;top:6px;font-size:11px;font-weight:700;letter-spacing:.1em;opacity:.9}
-.bg-indigo{background:var(--indigo)} .bg-sakura{background:var(--sakura-d)}
-.bg-ink{background:var(--ink)} .bg-gold{background:var(--gold-d)} .bg-bad{background:var(--bad)}
+  .msg {
+    font-size: .85rem;
+    margin-top: .4rem;
+    min-height: 1.2em;
+  }
+  .msg.err { color: #8a2b2b; font-weight: 600; }
+  .msg.ok  { font-weight: 700; }
 
-/* ---------- featured carousel ---------- */
-.carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 18px;scrollbar-width:none}
-.carousel::-webkit-scrollbar{display:none}
-.drop{flex:0 0 82%;scroll-snap-align:center;transform:rotate(-1.6deg)}
-.drop:nth-child(2){transform:rotate(1.3deg)}
-.drop:nth-child(3){transform:rotate(-1.1deg)}
-.drop .cover{height:190px;border-radius:calc(var(--radius) - 4px) calc(var(--radius) - 4px) 0 0}
-.drop .body{padding:12px 14px 14px}
-.drop h3{font-family:var(--disp);font-size:17px;letter-spacing:-.01em}
-.drop .meta{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px;color:var(--muted)}
-.drop .price{font-family:var(--disp);font-weight:700;color:var(--ink)}
-.tag{
-  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  border:1.5px solid var(--ink);border-radius:6px;padding:2px 7px;background:var(--idle,#fff0);
-}
-.tag.live{background:var(--sakura)}
-.car-btns{display:flex;gap:8px}
-.icon-btn{
-  display:grid;place-items:center;width:38px;height:38px;border-radius:10px;
-  border:2px solid var(--ink);background:var(--paper2);box-shadow:3px 3px 0 var(--line);
-  cursor:pointer;transition:transform .12s ease,box-shadow .12s ease;color:var(--ink);
-}
-.icon-btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
-.icon-btn svg{width:16px;height:16px}
-.car-dots{display:flex;gap:6px;justify-content:center;margin-top:2px}
-.car-dots i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--ink);background:transparent;transition:background .2s}
-.car-dots i.on{background:var(--ink)}
+  .success {
+    text-align: center;
+    padding: 1.2rem 1rem;
+    border: 2px dashed var(--ink);
+    font-weight: 700;
+    animation: fadeUp .4s ease-out both;
+  }
 
-/* ---------- trending grid ---------- */
-.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.tile{transform:rotate(-1.2deg);position:relative}
-.tile:nth-child(2n){transform:rotate(1.3deg)}
-.tile .cover{height:118px}
-.tile .cover .kanji{font-size:44px}
-.tile .body{padding:10px 12px 12px}
-.tile h3{font-size:14px;font-family:var(--disp);font-weight:700}
-.tile .sub{font-size:12px;color:var(--muted);margin-top:2px}
-.tile .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
-.fav{
-  width:32px;height:32px;border-radius:9px;border:2px solid var(--ink);
-  background:var(--paper2);display:grid;place-items:center;cursor:pointer;
-  box-shadow:2px 2px 0 var(--ink);transition:transform .12s ease,box-shadow .12s ease,background .15s;
-}
-.fav:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
-.fav svg{width:15px;height:15px;fill:none;stroke:var(--ink);stroke-width:2.2}
-.fav[aria-pressed="true"]{background:var(--sakura)}
-.fav[aria-pressed="true"] svg{fill:var(--ink);stroke:var(--ink)}
-.tile.hide{display:none}
-.grid-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:13px;padding:20px;border:2px dashed var(--line-soft);border-radius:12px}
+  section {
+    margin-top: 2.6rem;
+    padding-top: 1.6rem;
+    border-top: 3px solid var(--ink);
+  }
 
-/* ---------- auctions ---------- */
-.auction{display:flex;gap:12px;padding:12px;align-items:center;transform:rotate(-.8deg)}
-.auction:nth-child(2n){transform:rotate(.9deg)}
-.auction + .auction{margin-top:14px}
-.auction .cover{width:64px;height:64px;flex-shrink:0;border-radius:10px}
-.auction .cover .kanji{font-size:30px}
-.auction .info{flex:1;min-width:0}
-.auction h3{font-size:14px;font-family:var(--disp);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.auction .bid{font-size:12.5px;color:var(--muted);margin-top:3px}
-.bid b{color:var(--ink);font-family:var(--disp)}
-.timer{
-  display:inline-flex;align-items:center;gap:6px;margin-top:6px;
-  font-family:var(--disp);font-weight:700;font-size:12.5px;
-  border:1.5px solid var(--ink);border-radius:7px;padding:3px 8px;background:var(--paper);
-}
-.timer.urgent{background:var(--bad);color:#fff;border-color:var(--bad)}
-.timer.urgent .dot{background:#fff}
-.timer.done{background:var(--line-soft);color:var(--ink2)}
+  h2 {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+    font-size: 1.35rem;
+    letter-spacing: .03em;
+    margin-bottom: 1rem;
+  }
 
-/* ---------- creators ---------- */
-.creator{display:flex;align-items:center;gap:12px;padding:12px 14px;transform:rotate(-.6deg)}
-.creator:nth-child(3n){transform:rotate(1deg)}
-.creator + .creator{margin-top:12px}
-.avatar{
-  width:46px;height:46px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;
-  border:2px solid var(--ink);font-family:var(--jp);font-weight:900;font-size:17px;color:#fff;box-shadow:2px 2px 0 var(--ink);
-}
-.creator .who{flex:1;min-width:0}
-.creator h3{font-size:14px;font-family:var(--disp);font-weight:700;display:flex;align-items:center;gap:6px}
-.creator .verified{color:var(--indigo);font-size:12px}
-.creator .subs{font-size:12px;color:var(--muted)}
-.follow{
-  font-family:var(--disp);font-weight:700;font-size:12px;border:2px solid var(--ink);
-  border-radius:999px;padding:7px 14px;background:var(--paper2);cursor:pointer;box-shadow:2.5px 2.5px 0 var(--ink);
-  transition:transform .12s ease,box-shadow .12s ease,background .15s;
-}
-.follow:active{transform:translate(2.5px,2.5px);box-shadow:0 0 0 var(--ink)}
-.follow[aria-pressed="true"]{background:var(--ink);color:var(--paper2)}
+  ul { list-style: none; }
+  li {
+    position: relative;
+    padding-left: 1.4rem;
+    margin-bottom: .75rem;
+    font-size: .94rem;
+    line-height: 1.5;
+  }
+  li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    font-weight: 900;
+  }
 
-/* ---------- how it works ---------- */
-.step{display:flex;gap:14px;padding:14px;align-items:flex-start;transform:rotate(-.5deg)}
-.step:nth-child(even){transform:rotate(.7deg)}
-.step + .step{margin-top:12px}
-.step .txt h3{font-family:var(--disp);font-size:15px}
-.step .txt p{font-size:13px;color:var(--ink2);margin-top:3px}
-.step .ja-tag{font-size:11px;color:var(--faint)}
-
-/* ---------- join ---------- */
-.join{
-  position:relative;border:2px solid var(--ink);border-radius:18px;background:var(--indigo);
-  color:var(--paper2);padding:22px 18px;box-shadow:6px 6px 0 var(--ink);transform:rotate(-1deg);overflow:hidden;
-}
-.join::after{
-  content:"member";position:absolute;inset:auto;right:-30px;top:-6px;
-  font-family:var(--jp);font-weight:900;font-size:110px;opacity:.1;color:#fff;pointer-events:none;
-}
-.join h2{color:#fff}
-.join p{font-size:13.5px;opacity:.85;margin-top:6px;max-width:36ch}
-.join form{margin-top:16px;display:flex;gap:10px;position:relative}
-.join input{
-  flex:1;min-width:0;border:2px solid var(--ink);border-radius:10px;padding:12px 14px;
-  font-family:var(--sans);font-size:14px;background:var(--paper2);color:var(--ink);box-shadow:3px 3px 0 var(--ink);
-}
-.join input::placeholder{color:var(--faint)}
-.join input.err{border-color:var(--bad);box-shadow:3px 3px 0 var(--bad)}
-.field-err{display:none;font-size:12px;font-weight:600;margin-top:8px;color:#ffd9d4}
-.field-err.show{display:block}
-.join .btn{background:var(--gold);color:var(--ink)}
-.join-privacy{font-size:11px;opacity:.65;margin-top:10px}
-
-/* ---------- footer ---------- */
-footer{margin-top:56px;border-top:2px solid var(--ink);padding:26px 16px calc(20px + var(--safe-b));text-align:center}
-.foot-logo{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:.02em}
-.foot-logo .ja{color:var(--gold-d)}
-.foot-nav{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:14px}
-.foot-nav a{color:var(--ink2);text-decoration:none;font-size:13px;font-weight:500;border-bottom:2px solid transparent}
-.foot-nav a:active{border-bottom-color:var(--ink)}
-.foot-legal{margin-top:16px;font-size:11.5px;color:var(--faint)}
-
-/* ---------- bottom nav ---------- */
-.bottom-nav{
-  position:fixed;left:0;right:0;bottom:0;z-index:60;
-  display:flex;justify-content:space-around;align-items:flex-end;
-  max-width:480px;margin:0 auto;background:var(--paper2);
-  border-top:2px solid var(--ink);padding:8px 10px calc(8px + var(--safe-b));
-}
-.nav-it{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  font-size:10px;font-weight:600;color:var(--faint);background:none;border:none;cursor:pointer;
-  padding:6px 8px;border-radius:10px;font-family:var(--sans);
-}
-.nav-it svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2;transition:color .15s}
-.nav-it[aria-current="page"]{color:var(--ink)}
-.nav-it:active{transform:scale(.92)}
-.nav-it:focus-visible{outline:3px dashed var(--indigo)}
-.nav-spacer{width:64px}
-.mint-fab{
-  width:64px;height:64px;border-radius:50%;border:2.5px solid var(--ink);
-  background:var(--mint);color:var(--ink);cursor:pointer;
-  display:grid;place-items:center;gap:0;
-  box-shadow:4px 6px 0 var(--ink),0 0 0 6px var(--paper);
-  transform:translateY(-26px);
-  font-family:var(--disp);font-weight:700;font-size:10px;letter-spacing:.08em;
-  transition:transform .15s ease,box-shadow .15s ease;
-}
-.mint-fab:active{transform:translateY(-24px) translate(3px,3px);box-shadow:1px 2px 0 var(--ink),0 0 0 6px var(--paper)}
-.mint-fab .ja{display:block;font-family:var(--jp);font-weight:900;font-size:16px;line-height:1}
-.mint-fab span{display:block;margin-top:2px}
-
-/* ---------- mint sheet ---------- */
-.sheet-backdrop{
-  position:fixed;inset:0;z-index:70;background:rgba(26,26,26,.55);
-  opacity:0;pointer-events:none;transition:opacity .25s ease;
-}
-.sheet-backdrop.open{opacity:1;pointer-events:auto}
-.sheet{
-  position:fixed;left:0;right:0;bottom:0;z-index:80;margin:0 auto;max-width:480px;
-  background:var(--paper2);border:2.5px solid var(--ink);border-bottom:none;
-  border-radius:22px 22px 0 0;box-shadow:-5px -5px 0 rgba(26,26,26,.25);
-  padding:14px 20px calc(22px + var(--safe-b));
-  transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.25,1);
-  max-height:88vh;overflow-y:auto;
-}
-.sheet.open{transform:none}
-.sheet .grab{width:44px;height:5px;border-radius:3px;background:var(--line-soft);margin:0 auto 14px}
-.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.sheet-head h2{font-size:20px}
-.sheet .close{width:34px;height:34px;border-radius:9px;border:2px solid var(--ink);background:var(--paper2);box-shadow:2.5px 2.5px 0 var(--ink);cursor:pointer;font-size:15px;font-weight:700;color:var(--ink);line-height:1;transition:transform .12s,box-shadow .12s}
-.sheet .close:active{transform:translate(2.5px,2.5px);box-shadow:0 0 0 var(--ink)}
-.sheet form{margin-top:14px;display:grid;gap:12px}
-.sheet label{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);display:grid;gap:6px}
-.sheet input,.sheet select,.sheet textarea{
-  border:2px solid var(--ink);border-radius:10px;padding:11px 13px;font-family:var(--sans);
-  font-size:14px;background:var(--paper);color:var(--ink);
-}
-.sheet .hint{font-size:12px;color:var(--muted);margin-top:14px}
-.sheet-fee{
-  display:flex;justify-content:space-between;font-size:12.5px;margin-top:14px;
-  border:2px dashed var(--line-soft);border-radius:10px;padding:10px 12px;background:var(--paper)
-}
-.sheet-fee b{font-family:var(--disp)}
-.sheet .btn{width:100%;margin-top:14px}
-.backdrop-blur{filter:none}
-body.sheet-open{overflow:hidden}
-
-/* ---------- toast ---------- */
-.toasts{
-  position:fixed;left:0;right:0;top:14px;z-index:100;display:grid;gap:8px;
-  max-width:480px;margin:0 auto;padding:0 16px;pointer-events:none;
-}
-.toast{
-  pointer-events:auto;justify-self:center;max-width:100%;
-  display:flex;align-items:center;gap:9px;
-  background:var(--ink);color:var(--paper2);border-radius:12px;
-  padding:11px 16px;font-size:13.5px;font-weight:600;
-  border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(26,26,26,.25);
-  transform:translateY(-16px);opacity:0;transition:transform .25s ease,opacity .25s ease;
-}
-.toast.show{transform:none;opacity:1}
-.toast.ok{background:#2f6e4a;border-color:#2f6e4a}
-.toast.bad{background:var(--bad);border-color:var(--bad)}
-.toast .ja{font-size:14px}
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 2px solid var(--ink);
+    font-size: .78rem;
+    letter-spacing: .05em;
+    opacity: .7;
+    text-align: center;
+  }
 </style>
 </head>
 <body>
+<div class="halftone" aria-hidden="true"></div>
+<div class="kanji" aria-hidden="true">墨</div>
 
-<!-- atmosphere -->
-<canvas class="kanji-canvas" aria-hidden="true"></canvas>
-<div class="tone-overlay" aria-hidden="true"></div>
-<div class="grain-overlay" aria-hidden="true"></div>
+<main>
+  <span class="badge">Phase 0 · Waitlist</span>
 
-<div class="page">
-
-  <!-- ================= HERO ================= -->
-  <header class="hero reveal">
-    <svg class="ink-splat" style="top:6px;left:8px" viewBox="0 0 40 40" aria-hidden="true">
-      <path d="M20 4c1.5 5 2 7 6 9-2-4-1-6 1-7 1.4 3.6 1 6.5 5 8.5 3-2.5 5-2 6 1-3 1.6-5 3.8-5 7.5 4 1 5.5 3.6 3.6 6.5-3.4-1.4-6.6-1-9 1.5 1.4 4.4-.6 7-4.6 6.6.4-4-1-6.6-4.6-7.5-2.4 3.2-5.4 3.4-7.8.6 2.6-2 3.6-4.6 2.8-8C9.4 21.2 8 18 10 14.6c2.6 1.6 5 1.2 7-1.2C14.6 10.6 14 7.6 15.4 5c3.2.8 4 .4 4.6-1z"/>
-    </svg>
-    <span class="sfx sfx-1 ja" lang="ja">ドン!!</span>
-    <span class="sfx sfx-2 ja" lang="ja">ゴゴゴ…</span>
-    <span class="sfx sfx-3 ja" lang="ja">初心者必読</span>
-
-    <span class="hero-badge">
-      <span class="dot ok" aria-hidden="true"></span>
-      On-chain ink · <span class="ja" lang="ja">現貨</span> Live
-    </span>
-
-    <h1 class="glitch-title" data-text="INKVERSE">INKVERSE</h1>
-    <p class="hero-kicker"><b>Manga, webtoons, novels &amp; artbooks</b> — collected as on-chain ink.</p>
-
-    <div class="hero-speech">
-      <span class="bubble">First drop of the day is <span lang="ja" class="ja"><b>呪印</b></span>!</span>
-    </div>
-
-    <div class="hero-cta">
-      <a class="btn btn-primary" href="#trending">Explore drops</a>
-      <button class="btn" id="watchLive" type="button">
-        <span class="dot" aria-hidden="true"></span> Watch live
-      </button>
-    </div>
-
-    <div class="stats" id="stats">
-      <div class="stat"><b data-count="48" data-suffix="K+">0K+</b><span>Minted</span></div>
-      <div class="stat"><b data-count="12.9" data-suffix="Ξ" data-decimals="1">0Ξ</b><span>24H Vol</span></div>
-      <div class="stat"><b data-count="3.2" data-suffix="K" data-decimals="1">0K</b><span>Creators</span></div>
-      <div class="stat"><b data-count="260" data-suffix="K">0K</b><span>Collectors</span></div>
-    </div>
+  <header>
+    <h1>INKVERSE<span class="jp">インクバース</span></h1>
+    <p class="tagline">Limited-edition manga drops for indie artists. Collect, trade, support creators.</p>
+    <p class="count">Join 127 others on the waitlist</p>
   </header>
 
-  <!-- ================= CATEGORIES ================= -->
-  <nav aria-label="Content categories" class="reveal">
-    <div class="sec-head">
-      <span class="eyebrow">Browse the verse</span>
-      <span class="seal-row" aria-hidden="true"><span class="seal" lang="ja">壱</span><span class="seal" lang="ja">弐</span><span class="seal" lang="ja">参</span></span>
-    </div>
-    <div class="chips" role="group" id="chips">
-      <button class="chip" data-cat="all" aria-pressed="true" type="button">All <em>342</em></button>
-      <button class="chip" data-cat="manga" aria-pressed="false" type="button">Manga <em>128</em></button>
-      <button class="chip" data-cat="novels" aria-pressed="false" type="button">Novels <em>86</em></button>
-      <button class="chip" data-cat="webtoons" aria-pressed="false" type="button">Webtoons <em>74</em></button>
-      <button class="chip" data-cat="artbooks" aria-pressed="false" type="button">Artbooks <em>41</em></button>
-      <button class="chip" data-cat="covers" aria-pressed="false" type="button">Cover art <em>9</em></button>
-      <button class="chip" data-cat="sketches" aria-pressed="false" type="button">Sketches <em>4</em></button>
-    </div>
-  </nav>
-
-  <!-- ================= FEATURED DROPS ================= -->
-  <section class="reveal" id="featured" aria-labelledby="featured-h">
-    <div class="sec-head">
-      <div>
-        <span class="eyebrow">Featured</span>
-        <h2 id="featured-h">Today's drops <span class="ja" lang="ja" style="color:var(--sakura-d)">今日の落</span></h2>
-      </div>
-      <div class="car-btns">
-        <button class="icon-btn" id="carPrev" type="button" aria-label="Previous drop">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 5l-7 7 7 7"/></svg>
-        </button>
-        <button class="icon-btn" id="carNext" type="button" aria-label="Next drop">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="carousel" id="carousel" tabindex="0" aria-label="Featured drops carousel">
-      <article class="card drop">
-        <div class="cover bg-ink">
-          <span class="tone" aria-hidden="true"></span>
-          <small>MANGA · 01</small><span class="kanji" lang="ja">呪印</span>
-        </div>
-        <div class="body">
-          <h3>Cursed Seal — Vol. 1 Boxed Set</h3>
-          <div class="meta">
-            <span><span class="price">0.42Ξ</span> · 1/1</span>
-            <span class="tag live">Live <span class="ja" lang="ja">配信</span></span>
-          </div>
-        </div>
-      </article>
-
-      <article class="card drop">
-        <div class="cover bg-indigo">
-          <span class="tone" aria-hidden="true"></span>
-          <small>NOVEL · 02</small><span class="kanji" lang="ja">夢話</span>
-        </div>
-        <div class="body">
-          <h3>Dreamtalk — Annotated Novel</h3>
-          <div class="meta">
-            <span><span class="price">0.18Ξ</span> · 500 ed.</span>
-            <span class="tag" style="background:var(--gold)">Minting</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="card drop">
-        <div class="cover bg-bad">
-          <span class="tone" aria-hidden="true"></span>
-          <small>ARTBOOK · 03</small><span class="kanji" lang="ja">墨闘</span>
-        </div>
-        <div class="body">
-          <h3>Ink Duel — Artbook #4</h3>
-          <div class="meta">
-            <span><span class="price">0.66Ξ</span> · 1/1</span>
-            <span class="tag" style="background:var(--line-soft)">Soon</span>
-          </div>
-        </div>
-      </article>
-    </div>
-    <div class="car-dots" id="carDots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
-  </section>
-
-  <!-- ================= TRENDING ================= -->
-  <section class="reveal" id="trending" aria-labelledby="trending-h">
-    <div class="sec-head">
-      <div>
-        <span class="eyebrow">Trending</span>
-        <h2 id="trending-h">Hot ink <span class="ja" lang="ja" style="color:var(--gold-d)">人気</span></h2>
-      </div>
-      <span class="ja" lang="ja" style="font-weight:900;color:var(--bad);font-size:20px;transform:rotate(8deg);transform-origin:center">急上昇!!</span>
-    </div>
-    <div class="grid-2" id="trendGrid">
-      <article class="card tile" data-cat="manga">
-        <div class="cover bg-indigo"><span class="tone" aria-hidden="true"></span><span class="kanji" lang="ja">刃</span></div>
-        <div class="body"><h3>Blade Season #7</h3><p class="sub">Yuki Hara · 42 favs</p>
-          <div class="row"><span class="price" style="font-family:var(--disp);font-weight:700">0.21Ξ</span>
-          <button class="fav" type="button" aria-pressed="false" aria-label="Favorite Blade Season #7"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9c-1.6-2.9.2-7 4.1-7 2.1 0 3.7 1.2 4.7 3h2.4c1-1.8 2.6-3 4.7-3 3.9 0 5.7 4.1 4.1 7-2.5 4.4-10 9-10 9z"/></svg></button></div>
-        </div>
-      </article>
-      <article class="card tile" data-cat="webtoons">
-        <div class="cover bg-sakura"><span class="tone" aria-hidden="true"></span><span class="kanji" lang="ja">閃</span></div>
-        <div class="body"><h3>Flashpoint Ep. 42</h3><p class="sub">Néo Studio · 38 favs</p>
-          <div class="row"><span class="price" style="font-family:var(--disp);font-weight:700">0.09Ξ</span>
-          <button class="fav" type="button" aria-pressed="false" aria-label="Favorite Flashpoint Ep. 42"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9c-1.6-2.9.2-7 4.1-7 2.1 0 3.7 1.2 4.7 3h2.4c1-1.8 2.6-3 4.7-3 3.9 0 5.7 4.1 4.1 7-2.5 4.4-10 9-10 9z"/></svg></button></div>
-        </div>
-      </article>
-      <article class="card tile" data-cat="novels">
-        <div class="cover bg-ink"><span class="tone" aria-hidden="true"></span><span class="kanji" lang="ja">夜</span></div>
-        <div class="body"><h3>Nightwatch — Chapter 1</h3><p class="sub">Rin Asano · 31 favs</p>
-          <div class="row"><span class="price" style="font-family:var(--disp);font-weight:700">0.14Ξ</span>
-          <button class="fav" type="button" aria-pressed="false" aria-label="Favorite Nightwatch Chapter 1"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9c-1.6-2.9.2-7 4.1-7 2.1 0 3.7 1.2 4.7 3h2.4c1-1.8 2.6-3 4.7-3 3.9 0 5.7 4.1 4.1 7-2.5 4.4-10 9-10 9z"/></svg></button></div>
-        </div>
-      </article>
-      <article class="card tile" data-cat="artbooks">
-        <div class="cover bg-gold"><span class="tone" aria-hidden="true"></span><span class="kanji" lang="ja">畢</span></div>
-        <div class="body"><h3>Sketchbook: Finale</h3><p class="sub">Ume-Do · 27 favs</p>
-          <div class="row"><span class="price" style="font-family:var(--disp);font-weight:700">0.33Ξ</span>
-          <button class="fav" type="button" aria-pressed="false" aria-label="Favorite Sketchbook Finale"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9c-1.6-2.9.2-7 4.1-7 2.1 0 3.7 1.2 4.7 3h2.4c1-1.8 2.6-3 4.7-3 3.9 0 5.7 4.1 4.1 7-2.5 4.4-10 9-10 9z"/></svg></button></div>
-        </div>
-      </article>
-      <article class="card tile" data-cat="covers">
-        <div class="cover bg-bad"><span class="tone" aria-hidden="true"></span><span class="kanji" lang="ja">絆</span></div>
-        <div class="body"><h3>Bond — Cover art #2</h3><p class="sub">Kaoru Moto · 24 favs</p>
-          <div class="row"><span class="price" style="font-family:var(--disp);font-weight:700">0.55Ξ</span>
-          <button class="fav" type="button" aria-pressed="false" aria-label="Favorite Bond Cover art 2"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9c-1.6-2.9.2-7 4.1-7 2.1 0 3.7 1.2 4.7 3h2.4c1-1.8 2.6-3 4.7-3 3.9 0 5.7 4.1 4.1 7-2.5 4.4-10 9-10 9z"/></svg></button></div>
-        </div>
-      </article>
-      <article class="card tile" data-cat="sketches">
-        <div class="cover bg-ink"><span class="tone" aria-hidden="true"></span><span class="kanji" lang="ja">筆</span></div>
-        <div class="body"><h3>Brush Study 014</h3><p class="sub">Hen Aoyama · 19 favs</p>
-          <div class="row"><span class="price" style="font-family:var(--disp);font-weight:700">0.05Ξ</span>
-          <button class="fav" type="button" aria-pressed="false" aria-label="Favorite Brush Study 014"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9c-1.6-2.9.2-7 4.1-7 2.1 0 3.7 1.2 4.7 3h2.4c1-1.8 2.6-3 4.7-3 3.9 0 5.7 4.1 4.1 7-2.5 4.4-10 9-10 9z"/></svg></button></div>
-        </div>
-      </article>
-      <p class="grid-empty" id="gridEmpty" hidden>No works in this category yet — mint the first one! <span class="ja" lang="ja" aria-hidden="true">後悔先に立たず</span></p>
-    </div>
-  </section>
-
-  <!-- ================= LIVE AUCTIONS ================= -->
-  <section class="reveal" id="auctions" aria-labelledby="auctions-h">
-    <div class="sec-head">
-      <div>
-        <span class="eyebrow"><span class="dot" aria-hidden="true"></span> Live now</span>
-        <h2 id="auctions-h">Auction hall <span class="ja" lang="ja" style="color:var(--indigo)">競売</span></h2>
-      </div>
-      <span class="ja" lang="ja" style="font-weight:900;color:var(--gold-d);font-size:20px;transform:rotate(-5deg)">ゴゴゴ…</span>
-    </div>
-
-    <article class="card auction">
-      <div class="cover bg-indigo" aria-hidden="true"><span class="tone"></span><span class="kanji" lang="ja">鬼</span></div>
-      <div class="info">
-        <h3>Oni Mask — Panel 001</h3>
-        <p class="bid">Bid <b>1.92Ξ</b> · 7 bids</p>
-        <span class="timer" data-end="1500"><span class="dot" aria-hidden="true"></span><time>--:--:--</time></span>
-      </div>
-    </article>
-
-    <article class="card auction">
-      <div class="cover bg-gold" aria-hidden="true"><span class="tone"></span><span class="kanji" lang="ja">鶴</span></div>
-      <div class="info">
-        <h3>Thousand Cranes — Spread</h3>
-        <p class="bid">Bid <b>0.84Ξ</b> · 12 bids</p>
-        <span class="timer" data-end="420"><span class="dot" aria-hidden="true"></span><time>--:--:--</time></span>
-      </div>
-    </article>
-
-    <article class="card auction">
-      <div class="cover bg-sakura" aria-hidden="true"><span class="tone"></span><span class="kanji" lang="ja">桜</span></div>
-      <div class="info">
-        <h3>Sakura Pour — Original</h3>
-        <p class="bid">Bid <b>0.45Ξ</b> · 21 bids</p>
-        <span class="timer" data-end="75"><span class="dot" aria-hidden="true"></span><time>--:--:--</time></span>
-      </div>
-    </article>
-
-    <article class="card auction">
-      <div class="cover bg-ink" aria-hidden="true"><span class="tone"></span><span class="kanji" lang="ja">雷</span></div>
-      <div class="info">
-        <h3>Thunder Gate — Concept</h3>
-        <p class="bid">Bid <b>2.30Ξ</b> · 4 bids</p>
-        <span class="timer" data-end="6000"><span class="dot" aria-hidden="true"></span><time>--:--:--</time></span>
-      </div>
-    </article>
-  </section>
-
-  <!-- ================= CREATORS ================= -->
-  <section class="reveal" id="creators" aria-labelledby="creators-h">
-    <div class="sec-head">
-      <div>
-        <span class="eyebrow">Artists</span>
-        <h2 id="creators-h">Top creators <span class="ja" lang="ja" style="color:var(--sakura-d)">作家</span></h2>
-      </div>
-    </div>
-
-    <article class="card creator">
-      <span class="avatar bg-indigo" aria-hidden="true" lang="ja">夕</span>
-      <div class="who"><h3>Yuki451 <span class="verified" aria-label="Verified artist">✦</span></h3><p class="subs">18.2K followers</p></div>
-      <button class="follow" type="button" aria-pressed="false">Follow</button>
-    </article>
-    <article class="card creator">
-      <span class="avatar bg-sakura" aria-hidden="true" lang="ja">蓮</span>
-      <div class="who"><h3>RENZŌ Ink <span class="verified" aria-label="Verified artist">✦</span></h3><p class="subs">14.9K followers</p></div>
-      <button class="follow" type="button" aria-pressed="false">Follow</button>
-    </article>
-    <article class="card creator">
-      <span class="avatar bg-ink" aria-hidden="true" lang="ja">風</span>
-      <div class="who"><h3>Kaze Komix</h3><p class="subs">9.7K followers</p></div>
-      <button class="follow" type="button" aria-pressed="false">Follow</button>
-    </article>
-    <article class="card creator">
-      <span class="avatar bg-bad" aria-hidden="true" lang="ja">刃</span>
-      <div class="who"><h3>Mirei Ha <span class="verified" aria-label="Verified artist">✦</span></h3><p class="subs">7.4K followers</p></div>
-      <button class="follow" type="button" aria-pressed="false">Follow</button>
-    </article>
-    <article class="card creator">
-      <span class="avatar bg-gold" aria-hidden="true" lang="ja">鈴</span>
-      <div class="who"><h3>Suzu Tales</h3><p class="subs">5.1K followers</p></div>
-      <button class="follow" type="button" aria-pressed="false">Follow</button>
-    </article>
-    <article class="card creator">
-      <span class="avatar bg-indigo" aria-hidden="true" lang="ja">匠</span>
-      <div class="who"><h3>Takumi_0x <span class="verified" aria-label="Verified artist">✦</span></h3><p class="subs">4.6K followers</p></div>
-      <button class="follow" type="button" aria-pressed="false">Follow</button>
-    </article>
-  </section>
-
-  <!-- ================= HOW IT WORKS ================= -->
-  <section class="reveal" aria-labelledby="how-h">
-    <div class="sec-head">
-      <div>
-        <span class="eyebrow">Start here</span>
-        <h2 id="how-h">How it works</h2>
-      </div>
-      <span class="seal-row" aria-hidden="true"><span class="seal" lang="ja">道</span></span>
-    </div>
-
-    <div class="card step">
-      <span class="seal step-seal" lang="ja">壱</span>
-      <div class="txt"><h3>Create <span class="ja-tag ja" lang="ja">描く</span></h3><p>Ink chapter spreads, covers, prose pages or sketches — PNG, PDF or EPUB.</p></div>
-    </div>
-    <div class="card step">
-      <span class="seal step-seal" lang="ja">弐</span>
-      <div class="txt"><h3>Mint <span class="ja-tag ja" lang="ja">鋳造</span></h3><p>Pin an edition to the chain in one tap. 0 gas on Inkverse L2, royalties set by you.</p></div>
-    </div>
-    <div class="card step">
-      <span class="seal step-seal" lang="ja">参</span>
-      <div class="txt"><h3>Earn <span class="ja-tag ja" lang="ja">稼ぐ</span></h3><p>Drops sell in open editions or timed auctions. Revenue splits land instantly.</p></div>
-    </div>
-    <div class="card step">
-      <span class="seal step-seal" lang="ja">肆</span>
-      <div class="txt"><h3>Collect <span class="ja-tag ja" lang="ja">集める</span></h3><p>Fan shelf, trade, and prove provenance — the library remembers every stroke.</p></div>
-    </div>
-  </section>
-
-  <!-- ================= JOIN ================= -->
-  <section class="reveal" id="join">
-    <div class="join">
-      <svg class="ink-splat" style="bottom:14px;left:-6px;width:44px" viewBox="0 0 40 40" aria-hidden="true" fill="#fff" opacity=".18">
-        <circle cx="20" cy="20" r="11"/><circle cx="32" cy="12" r="4"/><circle cx="10" cy="30" r="3"/><circle cx="30" cy="31" r="2.4"/>
-      </svg>
-      <span class="eyebrow" style="color:#fff;opacity:.75">The Inklist <span class="ja" lang="ja">墨名簿</span></span>
-      <h2>Daily drops in your inbox</h2>
-      <p>One email a day: fresh drops, live-auction alerts and creator spotlights. Inkless spam, ever.</p>
-      <form id="joinForm" novalidate>
-        <label class="sr-only-visually" for="email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email address</label>
-        <input type="email" id="email" name="email" placeholder="you@paper.ink" autocomplete="email" required />
-        <button class="btn bc" type="submit">Join</button>
-      </form>
-      <p class="field-err" id="emailErr" role="alert" aria-live="polite">Please enter a valid email — e.g. you@paper.ink</p>
-      <p class="join-privacy">12.4K artists &amp; collectors already signed. Unsubscribe with one tap.</p>
-    </div>
-  </section>
-
-  <!-- ================= FOOTER ================= -->
-  <footer>
-    <p class="foot-logo">INK<span style="color:var(--sakura-d)">VERSE</span> <span class="ja" lang="ja" style="font-size:13px">墨界</span></p>
-    <nav class="foot-nav" aria-label="Footer">
-      <a href="#trending">Explore</a><a href="#featured">Drops</a><a href="#creators">Creators</a>
-      <a href="#auctions">Auctions</a><a href="#join">Inklist</a><a href="#" onclick="return false">Guidelines</a>
-    </nav>
-    <p class="foot-legal">© 2026 Inkverse Collective — every stroke on-chain. <span class="ja" lang="ja">末長く</span></p>
-  </footer>
-</div>
-
-<!-- ================= BOTTOM NAV ================= -->
-<nav class="bottom-nav" aria-label="Primary">
-  <button class="nav-it" type="button" aria-current="page" data-nav="Home">
-    <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Home
-  </button>
-  <button class="nav-it" type="button" data-nav="Discover">
-    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Discover
-  </button>
-  <span class="nav-spacer" aria-hidden="true"></span>
-  <button class="nav-it" type="button" data-nav="Bids">
-    <svg viewBox="0 0 24 24"><path d="M4 18v-3h13l-2.5-2.5M20 6v3H7l2.5 2.5"/></svg>Bids
-  </button>
-  <button class="nav-it" type="button" data-nav="Library">
-    <svg viewBox="0 0 24 24"><path d="M4 4h6v16H4zM14 4h6v16h-6z"/></svg>Library
-  </button>
-</nav>
-<!-- floating mint (positioned over spacer) -->
-<button class="mint-fab" type="button" id="mintFab" aria-haspopup="dialog" aria-expanded="false" aria-controls="mintSheet">
-  <span class="ja" lang="ja" aria-hidden="true">鋳</span><span>Mint</span>
-</button>
-<style>#mintFab{position:fixed;left:50%;transform:translate(-50%,0) translateY(-26px);z-index:65;bottom:calc(6px + var(--safe-b));}
-#mintFab:active{transform:translate(-50%,0) translateY(-24px) translate(2px,2px);}
-@media (min-width:481px){}</style>
-
-<!-- ================= MINT SHEET ================= -->
-<div class="sheet-backdrop" id="sheetBackdrop"></div>
-<div class="sheet" id="mintSheet" role="dialog" aria-modal="true" aria-labelledby="mintTitle" tabindex="-1">
-  <div class="grab" aria-hidden="true"></div>
-  <div class="sheet-head">
-    <h2 id="mintTitle">New drop <span class="ja" lang="ja" style="color:var(--gold-d);font-size:15px">新刊申請</span></h2>
-    <button class="close" type="button" id="sheetClose" aria-label="Close mint dialog">✕</button>
-  </div>
-  <form id="mintForm" novalidate>
-    <label>Title <input type="text" id="mintTitleInput" placeholder="e.g. Cursed Seal — Vol. 2" maxlength="60" required /></label>
-    <label>Category
-      <select id="mintCat" required>
-        <option value="" selected disabled>Select category…</option>
-        <option value="manga">Manga</option><option value="novels">Novels</option>
-        <option value="webtoons">Webtoons</option><option value="artbooks">Artbooks</option>
-        <option value="covers">Cover art</option><option value="sketches">Sketches</option>
-      </select>
-    </label>
-    <label>Price (Ξ)
-      <input type="number" id="mintPrice" min="0.01" step="0.01" placeholder="0.21" required />
-    </label>
-    <label>Cover kanji <input type="text" id="mintKanji" placeholder="呪" maxlength="3" lang="ja" /></label>
-    <div class="sheet-fee"><span>Mint fee (gas absorbed)</span><b>0 Ξ</b></div>
-    <button class="btn btn-mint" type="submit">Submit drop <span class="ja" lang="ja">提出!!</span></button>
-    <p class="hint">Drops are reviewed within 24h. You keep 10% royalties, always.</p>
+  <form id="waitlist" novalidate>
+    <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+    <button type="submit">Join the Waitlist</button>
+    <p class="msg" id="msg" role="status"></p>
   </form>
-</div>
 
-<!-- ================= TOASTS ================= -->
-<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+  <section>
+    <h2>For Artists</h2>
+    <ul>
+      <li>Drop limited editions (50, 100, 500 copies)</li>
+      <li>Earn on every resale</li>
+      <li>Zero upfront cost</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>For Collectors</h2>
+    <ul>
+      <li>Numbered, limited-edition manga</li>
+      <li>Resale marketplace</li>
+      <li>Support artists directly</li>
+    </ul>
+  </section>
+
+  <footer>Built by artists, for artists. Launching 2026.</footer>
+</main>
 
 <script>
-(function(){
-"use strict";
-const $=(s,c=document)=>c.querySelector(s);
-const $$=(s,c=document)=>[...c.querySelectorAll(s)];
-const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var form = document.getElementById('waitlist');
+  var email = document.getElementById('email');
+  var msg = document.getElementById('msg');
 
-/* ---------- toast ---------- */
-const toasts=$("#toasts");
-function toast(msg,{type="",kanji=""}={}){
-  const t=document.createElement("div");
-  t.className="toast "+type;
-  t.innerHTML=(kanji?`<span class="ja" lang="ja">${kanji}</span>`:"")+`<span>${msg}</span>`;
-  toasts.appendChild(t);
-  requestAnimationFrame(()=>t.classList.add("show"));
-  setTimeout(()=>{t.classList.remove("show");setTimeout(()=>t.remove(),300);},2600);
-}
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var value = email.value.trim();
+    var valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
 
-/* ---------- reveal on scroll ---------- */
-const io=new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});
-},{threshold:.12});
-$$(".reveal").forEach(el=>io.observe(el));
+    if (!valid) {
+      msg.textContent = 'Please enter a valid email address.';
+      msg.className = 'msg err';
+      email.focus();
+      return;
+    }
 
-/* ---------- stats counters ---------- */
-const statIO=new IntersectionObserver(es=>{
-  es.forEach(e=>{
-    if(!e.isIntersecting)return;
-    statIO.unobserve(e.target);
-    $$("[data-count]",e.target).forEach(el=>{
-      const target=+el.dataset.count,dec=+(el.dataset.decimals||0),suf=el.dataset.suffix||"";
-      if(reduced){el.textContent=target.toFixed(dec)+suf;return;}
-      const t0=performance.now(),dur=1400;
-      (function tick(now){
-        const p=Math.min(1,(now-t0)/dur),ease=1-Math.pow(1-p,3);
-        el.textContent=(target*ease).toFixed(dec)+suf;
-        if(p<1)requestAnimationFrame(tick);
-      })(t0);
-    });
+    console.log('waitlist signup:', value);
+    msg.textContent = '';
+    form.innerHTML = '<div class="success">You\'re on the list. 限りなく<br>See you at launch.</div>';
   });
-},{threshold:.5});
-statIO.observe($("#stats"));
-
-/* ---------- category chips filter trending ---------- */
-const chips=$$("#chips .chip"),tiles=$$("#trendGrid .tile"),empty=$("#gridEmpty");
-chips.forEach(c=>c.addEventListener("click",()=>{
-  chips.forEach(x=>x.setAttribute("aria-pressed","false"));
-  c.setAttribute("aria-pressed","true");
-  const cat=c.dataset.cat;let vis=0;
-  tiles.forEach(t=>{
-    const show=cat==="all"||t.dataset.cat===cat;
-    t.classList.toggle("hide",!show);if(show)vis++;
-  });
-  empty.hidden=vis>0;
-}));
-
-/* ---------- favorites ---------- */
-$$(".fav").forEach(b=>b.addEventListener("click",()=>{
-  const on=b.getAttribute("aria-pressed")==="true";
-  b.setAttribute("aria-pressed",String(!on));
-  toast(on?"Removed from favorites":"Added to favorites",{kanji:on?"削":"心",type:on?"":"ok"});
-}));
-
-/* ---------- follows ---------- */
-$$(".follow").forEach(b=>b.addEventListener("click",()=>{
-  const on=b.getAttribute("aria-pressed")==="true";
-  b.setAttribute("aria-pressed",String(!on));
-  b.textContent=on?"Follow":"Following";
-  toast(on?"Unfollowed":"Following — new drops will ping you",{kanji:on?"切":"忍"});
-}));
-
-/* ---------- carousel ---------- */
-const car=$("#carousel"),dots=$$("#carDots i");
-function syncDots(){
-  const i=Math.round(car.scrollLeft/(car.scrollWidth/car.children.length));
-  dots.forEach((d,n)=>d.classList.toggle("on",n===Math.min(i,dots.length-1)));
-}
-car.addEventListener("scroll",syncDots,{passive:true});
-const slideW=()=>car.children[0].getBoundingClientRect().width+14;
-$("#carNext").addEventListener("click",()=>car.scrollBy({left:slideW(),behavior:reduced?"auto":"smooth"}));
-$("#carPrev").addEventListener("click",()=>car.scrollBy({left:-slideW(),behavior:reduced?"auto":"smooth"}));
-syncDots();
-
-/* ---------- countdowns ---------- */
-const timers=$$(".timer");
-const ends=timers.map(t=>Date.now()+(+t.dataset.end)*1000);
-function pad(n){return String(n).padStart(2,"0")}
-setInterval(()=>{
-  const now=Date.now();
-  timers.forEach((t,i)=>{
-    const s=Math.max(0,Math.floor((ends[i]-now)/1000));
-    const time=t.querySelector("time");
-    if(s<=0){t.classList.add("done");t.classList.remove("urgent");
-      t.innerHTML='<span aria-hidden="true">🏁</span><time>Ended</time>';return;}
-    time.textContent=pad(Math.floor(s/3600))+":"+pad(Math.floor(s/60)%60)+":"+pad(s%60);
-    t.classList.toggle("urgent",s<300);
-  });
-},1000);
-
-/* ---------- watch live ---------- */
-$("#watchLive").addEventListener("click",()=>{
-  toast("3 auctions live — you're spectating",{kanji:"配信",type:"ok"});
-  $("#auctions").scrollIntoView({behavior:reduced?"auto":"smooth"});
-});
-
-/* ---------- bottom nav ---------- */
-$$(".nav-it").forEach(n=>n.addEventListener("click",()=>{
-  $$(".nav-it").forEach(x=>x.removeAttribute("aria-current"));
-  n.setAttribute("aria-current","page");
-  const map={"Home":()=>window.scrollTo({top:0,behavior:reduced?"auto":"smooth"}),
-    "Discover":()=>$("#trending").scrollIntoView({behavior:reduced?"auto":"smooth"}),
-    "Bids":()=>$("#auctions").scrollIntoView({behavior:reduced?"auto":"smooth"}),
-    "Library":()=>$("#creators").scrollIntoView({behavior:reduced?"auto":"smooth"})};
-  map[n.dataset.nav]?.();
-}));
-
-/* ---------- mint sheet ---------- */
-const sheet=$("#mintSheet"),backdrop=$("#sheetBackdrop"),fab=$("#mintFab");
-let lastFocus=null;
-function openSheet(){
-  lastFocus=document.activeElement;
-  sheet.classList.add("open");backdrop.classList.add("open");
-  document.body.classList.add("sheet-open");
-  fab.setAttribute("aria-expanded","true");
-  setTimeout(()=>$("#mintTitleInput").focus(),reduced?0:300);
-  document.addEventListener("keydown",escClose);
-}
-function closeSheet(){
-  sheet.classList.remove("open");backdrop.classList.remove("open");
-  document.body.classList.remove("sheet-open");
-  fab.setAttribute("aria-expanded","false");
-  document.removeEventListener("keydown",escClose);
-  lastFocus?.focus?.();
-}
-function escClose(e){if(e.key==="Escape")closeSheet();}
-fab.addEventListener("click",openSheet);
-backdrop.addEventListener("click",closeSheet);
-$("#sheetClose").addEventListener("click",closeSheet);
-
-$("#mintForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const title=$("#mintTitleInput").value.trim(),
-        cat=$("#mintCat").value,
-        price=$("#mintPrice").value;
-  if(!title||!cat||!price){toast("Fill every field to mint",{kanji:"未",type:"bad"});return;}
-  const k=$("#mintKanji").value.trim()||"墨";
-  closeSheet();
-  toast(`"${title}" submitted for review · ${price}Ξ`,{kanji:"受理",type:"ok"});
-  e.target.reset();
-});
-
-/* ---------- join form ---------- */
-const joinForm=$("#joinForm"),email=$("#email"),emailErr=$("#emailErr");
-joinForm.addEventListener("submit",e=>{
-  e.preventDefault();
-  const v=email.value.trim();
-  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-  if(!ok){
-    email.classList.add("err");emailErr.classList.add("show");email.focus();
-    toast("That email doesn't look right",{kanji:"誤",type:"bad"});return;
-  }
-  email.classList.remove("err");emailErr.classList.remove("show");
-  toast(`Welcome to the Inklist, ${v}`,{kanji:"入籍",type:"ok"});
-  joinForm.reset();
-});
-email.addEventListener("input",()=>{email.classList.remove("err");emailErr.classList.remove("show");});
-
-/* ---------- floating kanji particles ---------- */
-const cv=$(".kanji-canvas"),ctx=cv.getContext("2d");
-const GLYPHS=["墨","夢","頁","絆","刃","瞬","走","闘","響","空","紙","魂"];
-let W,H,parts=[];
-function size(){
-  W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio;
-  cv.style.width=innerWidth+"px";cv.style.height=innerHeight+"px";
-  const n=Math.min(14,Math.floor(innerWidth/40));
-  parts=Array.from({length:n},()=>({
-    x:Math.random()*W,y:Math.random()*H,
-    g:GLYPHS[(Math.random()*GLYPHS.length)|0],
-    s:(14+Math.random()*26)*devicePixelRatio,
-    vy:(.15+Math.random()*.4)*devicePixelRatio,
-    vx:(Math.random()-.5)*.25*devicePixelRatio,
-    a:.05+Math.random()*.1,r:(Math.random()-.5)*.2
-  }));
-}
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle="#1a1a1a";
-  parts.forEach(p=>{
-    p.y-=p.vy;p.x+=p.vx;
-    if(p.y<-p.s*2){p.y=H+p.s;p.x=Math.random()*W;}
-    if(p.x<-p.s)p.x=W+p.s; if(p.x>W+p.s)p.x=-p.s;
-    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);
-    ctx.globalAlpha=p.a;
-    ctx.font=`900 ${p.s}px "Noto Sans JP",sans-serif`;
-    ctx.fillText(p.g,0,0);ctx.restore();
-  });
-  if(!reduced)requestAnimationFrame(draw);
-}
-size();draw();
-addEventListener("resize",()=>{size();if(reduced)draw();});
-})();
 </script>
 </body>
 </html>
