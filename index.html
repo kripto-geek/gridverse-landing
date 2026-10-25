@@ -2,628 +2,197 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#f5f0e8">
-<title>INKVERSE — Join the Waitlist</title>
-<meta name="description" content="INKVERSE — manga, novels, webtoons and artbooks as on-chain ink. Join the Inklist waitlist.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23faf8f5' stroke='%231a1a1a' stroke-width='4'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' font-family='sans-serif' fill='%231a1a1a'%3E%E5%A2%A8%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INKVERSE — Limited-edition manga drops</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
 <style>
-/* ---- tokens: ink on paper ---- */
-:root{
-  --paper:#f5f0e8; --paper2:#faf8f5; --card:#fdfcf9;
-  --ink:#1a1a1a; --ink2:#43423e; --muted:#6b6a63; --faint:#98958c;
-  --line:#1a1a1a; --line-soft:#ddd5c5;
-  --sakura:#e8b4c8; --indigo:#5b6abf; --gold:#d4a843;
-  --bad:#a8514a;
-  --ease:cubic-bezier(.22,1,.36,1);
-  --fd:'Space Grotesk','Noto Sans JP',sans-serif;
-  --fb:'Inter','Noto Sans JP',system-ui,sans-serif;
-  --fj:'Noto Sans JP',sans-serif;
-  --shadow-hard:4px 4px 0 var(--ink);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.55;
-  -webkit-font-smoothing:antialiased;overflow-x:clip;min-height:100vh}
-button{font-family:inherit;color:inherit;background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-input{font-family:inherit;color:var(--ink)}
-::selection{background:var(--sakura);color:var(--ink)}
-:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
-svg{display:block;flex:none}
-[lang="ja"]{font-family:var(--fj)}
-.jp{font-family:var(--fj);font-style:normal}
-main{overflow-x:clip}
-section{scroll-margin-top:78px}
-h1,h2,h3{font-weight:700}
-
-/* ---- backdrop: watercolor washes + screentone + paper grain ---- */
-.bg{position:fixed;inset:0;pointer-events:none;z-index:0}
-.wash{background:
-  radial-gradient(620px 420px at 90% -8%, rgba(232,180,200,.4), transparent 60%),
-  radial-gradient(520px 380px at -10% 28%, rgba(91,106,191,.16), transparent 60%),
-  radial-gradient(680px 520px at 55% 118%, rgba(212,168,67,.2), transparent 62%)}
-.halftone{background-image:radial-gradient(rgba(26,26,26,.045) 1px,transparent 1.4px);background-size:10px 10px}
-.halftone::after{content:"";position:absolute;inset:0;
-  background-image:radial-gradient(rgba(91,106,191,.05) 1.4px,transparent 2px);
-  background-size:26px 26px;background-position:7px 7px}
-.grain{position:fixed;inset:0;z-index:120;pointer-events:none;opacity:.55;mix-blend-mode:multiply;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.10 0 0 0 0 0.10 0 0 0 0 0.09 0 0 0 0.055 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-#fx{position:fixed;inset:0;z-index:1;pointer-events:none}
-
-/* app frame */
-.app{position:relative;z-index:3;max-width:480px;margin-inline:auto;padding-bottom:116px}
-@media (min-width:520px){.app{border-inline:1.5px solid rgba(26,26,26,.16);
-  box-shadow:0 30px 60px rgba(26,26,26,.15),0 8px 24px rgba(26,26,26,.08);background:var(--paper2)}}
-
-/* sticky header */
-.hdr{position:sticky;top:0;z-index:50;background:rgba(245,240,232,.88);
-  backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
-  border-bottom:2px solid transparent;padding-top:calc(10px + env(safe-area-inset-top,0));
-  transition:background .3s,border-color .3s}
-.hdr.scrolled{background:rgba(250,248,245,.96);border-bottom-color:var(--ink)}
-.hdr-row{display:flex;align-items:center;gap:9px;padding:9px 14px 10px}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);margin-right:auto}
-.logo-mark{width:35px;height:35px;border-radius:10px;display:grid;place-items:center;
-  background:radial-gradient(circle at 66% 28%, var(--sakura), rgba(232,180,200,0) 62%),#fff;
-  color:var(--ink);font-family:var(--fj);font-weight:900;font-size:1.15rem;
-  border:2.5px solid var(--line);box-shadow:3px 3px 0 var(--line);
-  transform:rotate(-4deg);transition:transform .25s var(--ease)}
-.logo:active .logo-mark{transform:rotate(4deg) scale(.92)}
-.logo-text{display:flex;flex-direction:column;line-height:1.05}
-.logo-text b{font-family:var(--fd);font-weight:700;font-size:1.02rem;letter-spacing:.04em;color:var(--ink)}
-.logo-text b em{font-style:normal;color:var(--indigo)}
-.logo-text small{font-family:var(--fj);font-size:.52rem;letter-spacing:.34em;color:var(--faint)}
-.hdr-btns{display:flex;align-items:center;gap:8px}
-.ib{position:relative;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
-  background:#fff;border:2px solid var(--line);box-shadow:2px 2px 0 var(--line);color:var(--ink2);
-  transition:transform .18s var(--ease),color .2s,background .2s}
-.ib svg{width:17px;height:17px}
-.ib:active{transform:translate(2px,2px);box-shadow:none;background:var(--ink);color:var(--paper2)}
-.ib .badge{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;
-  background:var(--sakura);border:2px solid var(--ink);animation:pulse 1.6s ease-in-out infinite}
-.wallet{display:flex;align-items:center;gap:7px;height:38px;padding:0 12px;border-radius:10px;
-  font-weight:700;font-size:.8rem;color:var(--ink);background:#fff;
-  border:2px solid var(--line);box-shadow:2px 2px 0 var(--line);transition:transform .18s var(--ease)}
-.wallet:active{transform:translate(2px,2px) scale(.97);box-shadow:none;background:var(--ink);color:var(--paper2)}
-.w-dot{width:7px;height:7px;border-radius:50%;background:var(--indigo);animation:pulse 2s ease-in-out infinite}
-
-/* hero */
-.hero{padding:26px 16px 6px;position:relative}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:.66rem;font-weight:700;
-  letter-spacing:.14em;color:var(--ink2);padding:6px 12px;border-radius:99px;
-  border:1.5px solid var(--line);background:#fff;box-shadow:2px 2px 0 var(--line)}
-.hero-badge .jp{color:var(--indigo);letter-spacing:.2em}
-.hero-badge i{font-style:normal;color:var(--gold)}
-.glitch-wrap{position:relative;margin-top:14px}
-.hero-title{position:relative;font-family:var(--fd);font-weight:700;line-height:.92;
-  font-size:clamp(2.9rem,16.5vw,4.7rem);letter-spacing:-.025em;color:var(--ink)}
-.hero-sfx{position:absolute;left:53%;top:-20px;z-index:2;transform:rotate(7deg);transform-origin:left bottom;
-  font-family:var(--fj);font-weight:900;font-size:1.3rem;line-height:1;color:var(--ink);
-  background:#fff;border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
-  padding:3px 9px 5px;letter-spacing:.04em;animation:sfxjit 4.2s var(--ease) infinite}
-@keyframes sfxjit{0%,88%,100%{transform:rotate(7deg)}92%{transform:rotate(3deg) scale(1.07)}96%{transform:rotate(9deg)}}
-/* ink-splatter glitch: misregistered print ghosts */
-.glitch{position:relative;display:inline-block;color:var(--ink);
-  text-shadow:3px 3px 0 rgba(232,180,200,.6),-2.5px -2.5px 0 rgba(91,106,191,.3)}
-.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;
-  color:var(--indigo);opacity:0;pointer-events:none;text-shadow:none}
-.glitch::after{color:var(--sakura)}
-.glitch::before{animation:glitch-a 5.2s linear infinite}
-.glitch::after{animation:glitch-b 4.6s linear infinite 1.1s}
-@keyframes glitch-a{0%,5%,100%{clip-path:inset(0 0 100% 0);opacity:0;transform:translate(0,0)}
-  .8%{clip-path:inset(14% 0 56% 0);opacity:.95;transform:translate(-3px,1px)}
-  1.8%{clip-path:inset(64% 0 7% 0);opacity:.95;transform:translate(3px,-1px)}
-  3%{clip-path:inset(40% 0 34% 0);opacity:.9;transform:translate(-2px,0)}}
-@keyframes glitch-b{0%,6%,100%{clip-path:inset(0 0 100% 0);opacity:0;transform:translate(0,0)}
-  1.2%{clip-path:inset(6% 0 76% 0);opacity:.9;transform:translate(4px,0)}
-  2.4%{clip-path:inset(48% 0 26% 0);opacity:.9;transform:translate(-4px,1px)}
-  3.8%{clip-path:inset(78% 0 2% 0);opacity:.85;transform:translate(2px,-1px)}}
-.hero-kicker{display:flex;margin-top:10px}
-.hero-sub{color:var(--ink2);font-size:.94rem;max-width:34ch}
-.hero-sub b{color:var(--ink)}
-.hero-vert{position:absolute;top:8px;right:0;writing-mode:vertical-rl;
-  font-family:var(--fj);font-weight:700;font-size:.72rem;letter-spacing:.42em;color:rgba(26,26,26,.42)}
-.hero-vert small{display:block;font-size:.55rem;color:var(--sakura)}
-.hero-cta{display:flex;gap:10px;margin-top:20px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  font-weight:700;font-size:.88rem;padding:12px 18px;border-radius:8px;border:2.5px solid var(--line);
-  transition:transform .16s var(--ease),box-shadow .2s,background .2s,color .2s;user-select:none}
-.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
-.btn svg{width:15px;height:15px}
-.btn-primary{background:var(--ink);color:var(--paper2);box-shadow:3px 3px 0 rgba(26,26,26,.4)}
-.btn-primary:active{background:var(--ink);color:var(--paper2);box-shadow:0 0 0 transparent}
-.btn-ghost{background:#fff;color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
-.btn-ghost:active{background:var(--ink);color:var(--paper2)}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none;animation:pulse 1.5s ease-in-out infinite}
-@keyframes pulse{50%{opacity:.3;transform:scale(.75)}}
-/* manga panels */
-.panel-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:9px;margin-top:24px}
-.panel{position:relative;border-radius:8px;border:3px solid var(--line);background:var(--card);
-  box-shadow:5px 5px 0 rgba(26,26,26,.9);overflow:hidden;transition:transform .3s var(--ease)}
-.panel:active{transform:scale(.98)}
-.p1{grid-column:span 7;height:172px;transform:rotate(-1.6deg);z-index:2}
-.p2{grid-column:span 5;height:172px;transform:rotate(1.3deg);display:grid;place-items:center;
-  background:repeating-conic-gradient(from 20deg at 50% 118%,rgba(26,26,26,.07) 0 1.6deg,transparent 1.6deg 8deg),var(--card)}
-.p3{grid-column:span 7;height:96px;transform:rotate(-.9deg);z-index:2;display:grid;place-items:center;
-  background:radial-gradient(circle at 20% 20%,rgba(232,180,200,.5),transparent 55%),var(--card)}
-.p4{grid-column:span 5;height:96px;transform:rotate(1.1deg);display:grid;place-items:center;
-  background:repeating-linear-gradient(45deg,rgba(212,168,67,.16) 0 9px,transparent 9px 20px),var(--card)}
-.p1 .art-bg{position:absolute;inset:0;
-  background:radial-gradient(circle at 62% 40%,rgba(232,180,200,.55),rgba(232,180,200,0) 58%),
-             radial-gradient(circle at 18% 92%,rgba(91,106,191,.2),transparent 52%)}
-.p1 .halfo{position:absolute;inset:0;opacity:.26;
-  background-image:radial-gradient(rgba(26,26,26,.5) 1px,transparent 1.5px);background-size:10px 10px}
-.p1 .kanji{position:absolute;left:50%;top:50%;transform:translate(-50%,-46%);
-  font-family:var(--fj);font-weight:900;font-size:6.4rem;line-height:1;
-  color:transparent;-webkit-text-stroke:2.5px var(--ink);
-  text-shadow:6px 6px 0 rgba(232,180,200,.85)}
-.p1 .shine{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.35) 42%,transparent 55%)}
-.p1 .eye{position:absolute;right:10px;bottom:9px;width:62px;color:var(--ink);opacity:.95}
-.corner-tag{position:absolute;left:9px;top:9px;z-index:2;font-size:.54rem;font-weight:800;letter-spacing:.13em;
-  padding:4px 8px;border-radius:5px;background:var(--ink);color:var(--paper2);border:1.5px solid var(--ink)}
-.p2 .kanji{font-family:var(--fj);font-weight:900;font-size:4.6rem;line-height:1;
-  color:transparent;-webkit-text-stroke:2px var(--ink);
-  text-shadow:4px 4px 0 rgba(212,168,67,.55)}
-.p2 .sfx{position:absolute;bottom:8px;left:10px;font-family:var(--fj);font-weight:700;
-  font-size:.66rem;letter-spacing:.3em;color:var(--ink2)}
-.bubble{position:relative;background:#fff;color:var(--ink);font-weight:800;font-size:.85rem;
-  padding:11px 15px;border-radius:14px;border:2.5px solid var(--ink);
-  transform:rotate(-3deg);box-shadow:3px 4px 0 var(--ink);text-align:center;z-index:1}
-.bubble small{display:block;font-family:var(--fj);font-weight:700;font-size:.62rem;letter-spacing:.16em;color:var(--indigo)}
-/* manga tail pointer */
-.bubble::after{content:"";position:absolute;left:-8px;top:50%;width:13px;height:13px;
-  background:#fff;border-left:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);
-  transform:translateY(-50%) rotate(45deg)}
-.ink-splat{position:absolute;right:7px;bottom:5px;width:26px;height:26px;opacity:.9;z-index:0;
-  background:radial-gradient(circle at 40% 40%,var(--ink) 42%,transparent 46%),
-    radial-gradient(circle at 66% 70%,var(--ink) 18%,transparent 22%),
-    radial-gradient(circle at 78% 34%,var(--ink) 12%,transparent 16%)}
-.p4 b{font-family:var(--fd);font-size:.78rem;letter-spacing:.06em;text-align:center;
-  color:var(--ink);transform:rotate(-2deg);position:relative;z-index:1}
-.p4 b .jp{display:block;font-size:.6rem;color:var(--ink2);margin-top:3px;letter-spacing:.2em}
-.p4 .sfx4{position:absolute;top:7px;right:8px;transform:rotate(10deg);font-style:normal;
-  font-family:var(--fj);font-weight:900;font-size:.92rem;line-height:1;color:var(--ink);
-  background:var(--sakura);border:2px solid var(--ink);padding:2px 6px 3px;box-shadow:2px 2px 0 var(--ink)}
-/* seal stamps (dashed) */
-.seal{position:absolute;top:10px;right:10px;width:27px;height:27px;display:grid;place-items:center;
-  border:2px dashed var(--ink);border-radius:7px;transform:rotate(9deg);
-  font-family:var(--fj);font-weight:700;font-size:.72rem;color:var(--ink);
-  background:rgba(232,180,200,.45)}
-.scroll-hint{display:flex;align-items:flex-end;gap:8px;justify-content:center;margin-top:26px;
-  color:var(--faint);font-size:.6rem;letter-spacing:.28em;font-weight:700}
-.scroll-hint i{width:1.5px;height:26px;background:var(--ink);animation:drop 1.8s ease-in-out infinite}
-@keyframes drop{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1)}100%{opacity:0}}
-
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:22px 16px 0;
-  background:var(--card);border:2.5px solid var(--line);border-radius:10px;overflow:hidden}
-.stat{position:relative;padding:13px 3px 11px;text-align:center}
-.stat::after{content:"";position:absolute;top:7px;left:50%;margin-left:-8px;width:16px;height:3px}
-.stat:nth-child(1)::after{background:var(--sakura)}
-.stat:nth-child(2)::after{background:var(--indigo)}
-.stat:nth-child(3)::after{background:var(--gold)}
-.stat:nth-child(4)::after{background:var(--sakura)}
-.stat+.stat::before{content:"";position:absolute;left:0;top:20%;bottom:20%;width:1.5px;background:var(--line-soft)}
-.stat b{display:block;font-family:var(--fd);font-weight:700;font-size:1.06rem;letter-spacing:-.02em;
-  font-variant-numeric:tabular-nums;color:var(--ink)}
-.stat small{display:block;margin-top:4px;font-size:.55rem;font-weight:700;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--muted);line-height:1.3}
-.stat .jp{display:block;font-size:.56rem;color:var(--faint);letter-spacing:.14em}
-
-/* section heads */
-.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:34px 16px 13px}
-.sec-head h2{display:flex;flex-direction:column;gap:3px;font-family:var(--fd);font-size:1.26rem;letter-spacing:-.01em;color:var(--ink)}
-.sec-head .tt{display:flex;align-items:center;gap:8px}
-.sec-head .tt::before{content:"";width:17px;height:9px;flex:none;border-radius:2px;background:var(--indigo);
-  clip-path:polygon(0 38%,100% 0,100% 62%,0 100%)}
-#how .sec-head .tt::before{background:var(--gold)}
-#join .sec-head .tt::before{background:var(--sakura)}
-.sec-head .jp{font-size:.6rem;letter-spacing:.3em;color:var(--indigo);margin-left:25px}
-
-/* how it works */
-.steps{list-style:none;margin:0 16px;display:grid;gap:12px}
-.step{position:relative;display:flex;gap:14px;align-items:center;padding:15px 16px;
-  background:var(--card);border:2px solid var(--line);border-radius:10px;
-  box-shadow:4px 4px 0 rgba(26,26,26,.7);transition:transform .2s}
-.step:active{transform:scale(.985)}
-.step:not(:last-child)::after{content:"";position:absolute;left:40px;bottom:-14px;width:2px;height:13px;
-  background:repeating-linear-gradient(to bottom,rgba(26,26,26,.7) 0 3px,transparent 3px 6px)}
-.step .n{font-family:var(--fd);font-weight:700;font-size:2rem;line-height:1;flex:none;width:44px;
-  color:transparent;-webkit-text-stroke:1.8px var(--ink)}
-.step h3{font-size:.92rem;display:flex;align-items:center;gap:8px;color:var(--ink)}
-.step h3 .jp{font-size:.6rem;color:var(--indigo);letter-spacing:.18em;font-weight:700}
-.step p{font-size:.74rem;color:var(--ink2);margin-top:4px;line-height:1.5}
-.sicon{margin-left:auto;flex:none;width:38px;height:38px;border-radius:9px;display:grid;place-items:center;
-  color:var(--ink);background:#fff;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
-.sicon svg{width:17px;height:17px}
-.step:nth-child(2) .sicon{color:var(--indigo);border-color:var(--indigo);box-shadow:2px 2px 0 var(--indigo)}
-.step:nth-child(3) .sicon{color:var(--gold);border-color:var(--gold);box-shadow:2px 2px 0 var(--gold)}
-.step:nth-child(4) .sicon{color:#C1738F;border-color:var(--sakura);box-shadow:2px 2px 0 var(--sakura)}
-
-/* email CTA */
-.cta-card{position:relative;margin:38px 16px 8px;padding:28px 20px 26px;text-align:center;
-  border-radius:10px;overflow:hidden;
-  background:var(--card);
-  border:3px solid var(--line);box-shadow:7px 7px 0 var(--ink)}
-.cta-card::before{content:"";position:absolute;inset:-42%;
-  background:repeating-conic-gradient(from 0deg at 50% 138%,rgba(26,26,26,.05) 0 2.4deg,transparent 2.4deg 9deg);
-  animation:spin 70s linear infinite}
-.cta-card::after{content:"";position:absolute;inset:0;opacity:.3;
-  background-image:radial-gradient(rgba(26,26,26,.5) 1px,transparent 1.4px);background-size:11px 11px}
-@keyframes spin{to{transform:rotate(1turn)}}
-.cta-jp{position:relative;z-index:1;font-family:var(--fj);font-weight:700;font-size:.6rem;letter-spacing:.34em;color:var(--indigo)}
-.cta-card h2{position:relative;z-index:1;font-family:var(--fd);font-size:1.62rem;margin-top:8px;letter-spacing:-.01em;color:var(--ink)}
-.cta-card .cta-sub{position:relative;z-index:1;color:var(--ink2);font-size:.8rem;max-width:34ch;margin:10px auto 0}
-.cta-card .cta-sub .jp{color:var(--gold)}
-.ink-form{position:relative;z-index:1;display:flex;gap:8px;margin-top:18px}
-.ink-form input{flex:1;min-width:0;height:46px;padding:0 14px;border-radius:8px;
-  background:#fff;border:2px solid var(--line);color:var(--ink);font-size:.85rem;outline:none;
-  transition:border-color .2s}
-.ink-form input:focus{border-color:var(--indigo)}
-.ink-form input::placeholder{color:var(--faint)}
-.ink-form .btn{padding:0 18px;border-radius:8px;flex:none}
-.form-msg{position:relative;z-index:1;font-size:.74rem;min-height:20px;margin-top:11px;color:var(--ink2)}
-.form-msg.ok{color:var(--indigo)} .form-msg.bad{color:var(--bad)}
-.shake{animation:formshake .4s}
-@keyframes formshake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-.cta-done{position:relative;z-index:1;padding:14px 10px 4px;font-size:.9rem;color:var(--indigo);font-weight:700}
-.cta-done .jp{display:block;color:var(--gold);font-size:1.3rem;margin-top:4px}
-
-/* footer */
-.foot{margin:44px 16px 0;padding:22px 0 10px;border-top:2px solid var(--line)}
-.fbrand{display:flex;align-items:center;gap:10px}
-.fbrand .logo-mark{width:30px;height:30px;font-size:.95rem;border-radius:8px}
-.fbrand b{font-family:var(--fd);letter-spacing:.05em;color:var(--ink)}
-.fbrand p{font-size:.66rem;color:var(--faint);margin-left:auto}
-.fbrand p .jp{color:var(--gold)}
-.copy{margin-top:16px;font-size:.6rem;color:var(--faint);letter-spacing:.06em}
-.copy .jp{color:var(--gold)}
-
-/* bottom nav + mint */
-.bnav{position:fixed;z-index:60;left:50%;transform:translateX(-50%);width:min(100%,480px);bottom:0;
-  display:grid;grid-template-columns:repeat(5,1fr);align-items:end;
-  padding:9px 12px calc(10px + env(safe-area-inset-bottom,0));
-  background:rgba(250,248,245,.94);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
-  border-top:2.5px solid var(--line)}
-.bi{position:relative;display:grid;justify-items:center;gap:3px;padding:5px 2px;color:var(--faint);
-  font-size:.58rem;font-weight:700;letter-spacing:.04em;transition:color .2s,transform .15s}
-.bi svg{width:20px;height:20px}
-.bi::before{content:"";width:16px;height:2.5px;border-radius:2px;background:transparent;transition:.25s}
-.bi:active{transform:scale(.9)}
-.bi.on{color:var(--ink)}
-.bi.on::before{background:var(--ink)}
-.mint{position:relative;z-index:61;width:62px;height:62px;border-radius:50%;
-  display:grid;place-items:center;align-self:center;justify-self:center;
-  background:#fff;border:3px solid var(--ink);color:var(--ink);
-  box-shadow:4px 5px 0 var(--ink);
-  transform:translateY(-24px);transition:transform .18s var(--ease)}
-.mint:active{transform:translateY(-21px) scale(.93)}
-.mint-ring{position:absolute;inset:-5px;border-radius:50%;border:2.5px solid rgba(26,26,26,.4);
-  animation:ring 2.6s var(--ease) infinite;pointer-events:none}
-@keyframes ring{0%{transform:scale(.85);opacity:.9}70%{transform:scale(1.35);opacity:0}100%{opacity:0}}
-.mint .mi{display:grid;justify-items:center;line-height:1.15}
-.mint .mi .star{font-size:1.05rem;line-height:1;color:var(--gold)}
-.mint .mi .jp{font-size:.52rem;font-weight:900;letter-spacing:.14em;color:var(--ink)}
-
-/* toast + reveal */
-.toast{position:fixed;z-index:90;left:50%;bottom:100px;transform:translateX(-50%) translateY(14px);
-  max-width:min(88vw,420px);text-align:center;opacity:0;pointer-events:none;
-  background:var(--ink);color:var(--paper2);border:2px solid var(--ink);
-  padding:10px 16px;border-radius:8px;font-size:.78rem;font-weight:600;
-  box-shadow:5px 5px 0 rgba(26,26,26,.3);transition:opacity .3s,transform .3s var(--ease)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast .jp{color:var(--sakura)}
-@media (prefers-reduced-motion: no-preference){
-  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:var(--d,0s)}
-  .reveal.in{opacity:1;transform:none}
-}
-@media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.15s !important}
-}
-@media (max-width:359px){
-  .stats{grid-template-columns:1fr 1fr}
-  .stat:nth-child(2)::before{display:none}
-}
+  :root{
+    --paper:#f5f0e8;
+    --ink:#1a1a1a;
+    --shadow:4px 4px 0 var(--ink);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    min-height:100vh;
+    min-height:100dvh;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    display:flex;
+    flex-direction:column;
+    /* halftone overlay */
+    background-image:radial-gradient(rgba(26,26,26,.07) 1px, transparent 1px);
+    background-size:8px 8px;
+    animation:fadeIn .8s ease-out both;
+  }
+  /* paper grain */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    z-index:0;
+  }
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  main,footer{position:relative;z-index:1}
+  main{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:3rem 1.25rem;
+  }
+  .wrap{
+    width:100%;
+    max-width:800px;
+    text-align:center;
+  }
+  .kanji{
+    font-family:'Noto Sans JP',sans-serif;
+    font-weight:500;
+    font-size:clamp(4.5rem,12vw,7rem);
+    line-height:1;
+    opacity:.08;
+    position:absolute;
+    top:-0.4em;
+    right:-0.1em;
+    pointer-events:none;
+    user-select:none;
+  }
+  .wordmark{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(2.6rem,9vw,4.5rem);
+    letter-spacing:.04em;
+    line-height:1;
+    position:relative;
+    display:inline-block;
+    padding-right:1.2em;
+  }
+  .sub{
+    font-family:'Noto Sans JP',sans-serif;
+    font-size:clamp(.85rem,3vw,1.1rem);
+    letter-spacing:.5em;
+    margin:1rem 0 2.25rem .5em;
+    opacity:.75;
+  }
+  .tagline{
+    font-size:clamp(1.05rem,3.5vw,1.3rem);
+    font-weight:500;
+    line-height:1.55;
+    max-width:30em;
+    margin:0 auto 2.5rem;
+  }
+  form{
+    display:flex;
+    gap:.65rem;
+    max-width:480px;
+    margin:0 auto;
+  }
+  input{
+    flex:1;
+    min-width:0;
+    padding:.9rem 1rem;
+    font:inherit;
+    font-size:1rem;
+    background:#fff;
+    border:2px solid var(--ink);
+    border-radius:3px;
+  }
+  input:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+  button{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    padding:.9rem 1.4rem;
+    white-space:nowrap;
+    background:var(--ink);
+    color:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:3px;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    transition:transform .12s, box-shadow .12s;
+  }
+  button:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  button:active{transform:translate(4px,4px);box-shadow:none}
+  button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+  .msg{margin-top:1.1rem;font-size:.95rem;font-weight:500;min-height:1.4em}
+  .err{color:#a03020}
+  .ok{
+    display:inline-block;
+    background:var(--ink);
+    color:var(--paper);
+    padding:.5rem 1.1rem;
+    border-radius:3px;
+  }
+  .proof{
+    margin-top:1.6rem;
+    font-size:.85rem;
+    letter-spacing:.02em;
+    opacity:.7;
+  }
+  footer{
+    text-align:center;
+    padding:1.5rem 1.25rem 2rem;
+    font-size:.8rem;
+    opacity:.65;
+    border-top:2px solid var(--ink);
+    margin:0 1.25rem;
+  }
+  @media (max-width:540px){
+    form{flex-direction:column}
+    button{width:100%}
+    .sub{letter-spacing:.35em}
+  }
+  @media (prefers-reduced-motion:reduce){
+    body{animation:none}
+  }
 </style>
 </head>
 <body>
-<div class="bg wash" aria-hidden="true"></div>
-<div class="bg halftone" aria-hidden="true"></div>
-<canvas id="fx" aria-hidden="true"></canvas>
-<div class="grain" aria-hidden="true"></div>
+<main>
+  <div class="wrap">
+    <h1 class="wordmark">
+      <span class="kanji" aria-hidden="true">墨</span>INKVERSE
+    </h1>
+    <p class="sub">インクバース</p>
+    <p class="tagline">Limited-edition manga drops for indie artists. Collect, trade, support creators.</p>
 
-<div class="app" id="app">
-  <header class="hdr" id="hdr">
-    <div class="hdr-row">
-      <a class="logo" href="#top" aria-label="INKVERSE home">
-        <span class="logo-mark" lang="ja" aria-hidden="true">墨</span>
-        <span class="logo-text"><b>INK<em>VERSE</em></b><small>インクバース</small></span>
-      </a>
-      <div class="hdr-btns">
-        <button class="ib" type="button" aria-label="Search drops">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
-        </button>
-        <button class="ib" type="button" aria-label="Notifications">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
-          <i class="badge" aria-hidden="true"></i>
-        </button>
-        <button class="wallet" type="button" aria-label="Wallet"><i class="w-dot" aria-hidden="true"></i>Ξ 2.48</button>
-      </div>
-    </div>
-  </header>
+    <form id="waitlist" novalidate>
+      <input id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+      <button type="submit">Join the waitlist</button>
+    </form>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
 
-  <main>
-    <section class="hero" id="top" aria-label="Inkverse intro">
-      <span class="hero-badge reveal"><i aria-hidden="true">✦</i> <span class="jp" lang="ja">マンガ × NFT</span> · THE MANGA-NFT MARKET</span>
-      <div class="glitch-wrap">
-        <h1 class="hero-title"><span class="glitch" data-text="INKVERSE">INKVERSE</span></h1>
-        <span class="hero-sfx jp" lang="ja" aria-hidden="true">ドン!!</span>
-        <span class="hero-vert" lang="ja" aria-hidden="true">創刊・第一話<small>vol.1</small></span>
-      </div>
-      <div class="hero-kicker reveal" style="--d:.08s">
-        <p class="hero-sub"><b>Manga, webtoons, novels & artbooks</b> — collected as on-chain ink. Own a page, a chapter, a legend.</p>
-      </div>
-      <div class="hero-cta reveal" style="--d:.14s">
-        <button class="btn btn-primary" data-scroll="#how">
-          Explore drops
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-        <button class="btn btn-ghost" data-scroll="#join"><i class="live-dot" aria-hidden="true"></i>Watch live</button>
-      </div>
-      <div class="panel-grid reveal" style="--d:.2s" role="img" aria-label="Decorative manga collage: kanji panels, sound effects and a speech bubble">
-        <div class="panel p1">
-          <div class="art-bg"></div><div class="halfo"></div>
-          <span class="corner-tag">MANGA · 墨</span>
-          <span class="seal" lang="ja">壱</span>
-          <b class="kanji" lang="ja" aria-hidden="true">墨</b>
-          <div class="shine"></div>
-          <svg class="eye" viewBox="0 0 72 44" aria-hidden="true">
-            <path d="M24 8 21 1" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-            <path d="M13 11 8 5" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
-            <path d="M5 21 1 14" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
-            <path d="M8 27 C20 8 50 7 66 19" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-            <path d="M12 31 C24 39 50 39 62 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-            <circle cx="37" cy="23" r="8.5" fill="currentColor"/>
-            <circle cx="40" cy="20" r="2.6" fill="#faf8f5"/>
-            <path d="M60 17 66 13" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="panel p2">
-          <span class="seal" lang="ja">弐</span>
-          <div><b class="kanji" lang="ja" aria-hidden="true">轟</b><span class="sfx jp" lang="ja">ゴゴゴ…</span></div>
-        </div>
-        <div class="panel p3">
-          <span class="seal" lang="ja">参</span>
-          <div class="bubble">NEW DROP!! <small lang="ja">ドロップ開始・初回限定</small></div>
-          <i class="ink-splat jp" lang="ja" aria-hidden="true"></i>
-        </div>
-        <div class="panel p4"><b>NEXT · CH.02<span class="jp">まもなく</span></b><i class="sfx4 jp" lang="ja">バン!</i></div>
-      </div>
-      <div class="scroll-hint" aria-hidden="true"><span>SCROLL</span><i></i><span lang="ja">下へ</span></div>
-    </section>
-
-    <div class="stats reveal" id="stats" aria-label="Marketplace statistics">
-      <div class="stat"><b>48K+</b><small>Works minted</small><span class="jp" lang="ja">作品数</span></div>
-      <div class="stat"><b>12.9Ξ</b><small>24H volume</small><span class="jp" lang="ja">取引高</span></div>
-      <div class="stat"><b>3.2K</b><small>Creators</small><span class="jp" lang="ja">クリエイター</span></div>
-      <div class="stat"><b>260K</b><small>Collectors</small><span class="jp" lang="ja">コレクター</span></div>
-    </div>
-
-    <section class="how" id="how" aria-label="How it works">
-      <div class="sec-head"><h2><span class="tt">How it works</span><span class="jp">はじめ方</span></h2></div>
-      <ol class="steps">
-        <li class="step reveal">
-          <span class="n" aria-hidden="true">01</span>
-          <div><h3>Link your wallet <span class="jp" lang="ja">リンク</span></h3><p>Connect any app wallet — fast & near-free.</p></div>
-          <span class="sicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M2 10h20"/><circle cx="17.5" cy="14.5" r="1"/></svg></span>
-        </li>
-        <li class="step reveal" style="--d:.07s">
-          <span class="n" aria-hidden="true">02</span>
-          <div><h3>Mint your pages <span class="jp" lang="ja">ミント</span></h3><p>Drop a panel, chapter or volume in editions.</p></div>
-          <span class="sicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 3.5 6 6L9 21H3v-6z"/><path d="m12 6 6 6"/></svg></span>
-        </li>
-        <li class="step reveal" style="--d:.14s">
-          <span class="n" aria-hidden="true">03</span>
-          <div><h3>Collect & trade <span class="jp" lang="ja">トレード</span></h3><p>Collectors buy numbered copies & resell.</p></div>
-          <span class="sicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H8a5 5 0 0 0-5 5"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h13a5 5 0 0 0 5-5"/></svg></span>
-        </li>
-        <li class="step reveal" style="--d:.21s">
-          <span class="n" aria-hidden="true">04</span>
-          <div><h3>Earn forever <span class="jp" lang="ja">ロイヤルティ</span></h3><p>Every resale routes 6% to the creator.</p></div>
-          <span class="sicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6.5c0-2-2.2-3-5-3s-5 1-5 2.8c0 4.2 10 2.2 10 6.4 0 1.9-2.2 2.8-5 2.8s-5-1-5-3"/></svg></span>
-        </li>
-      </ol>
-    </section>
-
-    <section class="cta" id="join" aria-label="Join the Inklist">
-      <div class="sec-head"><h2><span class="tt">Join the Inklist</span><span class="jp">ウェイトリスト</span></h2></div>
-      <div class="cta-card reveal">
-        <span class="cta-jp" lang="ja">インクの世界へようこそ</span>
-        <h2>Join the Inklist</h2>
-        <p class="cta-sub">Be first on launch day — founding collectors get day-one badges. <span class="jp" lang="ja">約束する。</span></p>
-        <form class="ink-form" id="inkForm" novalidate>
-          <input type="email" id="inkEmail" name="email" placeholder="you@inkverse.io" aria-label="Email address" autocomplete="email">
-          <button type="submit" class="btn btn-primary" aria-label="Subscribe">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>
-          </button>
-        </form>
-        <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
-      </div>
-    </section>
-
-    <footer class="foot">
-      <div class="fbrand">
-        <span class="logo-mark" lang="ja" aria-hidden="true">墨</span>
-        <b>INKVERSE</b>
-        <p>ink never dries · <span class="jp" lang="ja">墨は死なない</span></p>
-      </div>
-      <p class="copy">© 2026 INKVERSE LAB — all panels reserved · <span class="jp" lang="ja">漫画・小説・ウェブトゥーン・画集</span></p>
-    </footer>
-  </main>
-</div>
-
-<nav class="bnav" id="bnav" aria-label="Primary">
-  <button class="bi on" type="button" data-go="#top"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10.5 9-7.5 9 7.5V20a1.5 1.5 0 0 1-1.5 1.5H14v-6h-4v6H4.5A1.5 1.5 0 0 1 3 20Z"/></svg></span>Home</button>
-  <button class="bi" type="button" data-go="#how"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg></span>Discover</button>
-  <button class="mint" id="mintBtn" type="button" aria-label="Mint your work — ミント">
-    <span class="mint-ring" aria-hidden="true"></span>
-    <span class="mi"><span class="star" aria-hidden="true">✦</span><span class="jp" lang="ja">ミント</span></span>
-  </button>
-  <button class="bi" type="button" data-go="#stats"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3.5 2"/></svg></span>Bids</button>
-  <button class="bi" type="button" data-go="#join"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg></span>Library</button>
-</nav>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <p class="proof">Join 127 others on the waitlist</p>
+  </div>
+</main>
+<footer>Built by artists, for artists. Launching 2026.</footer>
 
 <script>
 (function(){
-'use strict';
-var $=function(s,c){return (c||document).querySelector(s);};
-var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));};
-var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-var vibrate=function(ms){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}};
-var esc=function(s){return String(s).split('<').join(String.fromCharCode(38)+'lt;');};
-
-/* ---------- toast ---------- */
-var toastT;
-function toast(msg){
-  var t=$('#toast'); if(!t) return;
-  t.innerHTML=msg; t.classList.add('show');
-  clearTimeout(toastT); toastT=setTimeout(function(){t.classList.remove('show');},2400);
-}
-
-/* ---------- floating kanji ink particles ---------- */
-var fx=$('#fx'),ctx=fx?fx.getContext('2d'):null,bursts=[];
-var KANJI=['墨','夢','桜','光','闇','文','夜','∞'];
-/* mostly black ink, rare muted accent */
-var HUES=['26,26,26','26,26,26','26,26,26','91,106,191','232,180,200'];
-var parts=[],W=0,H=0;
-function fxResize(){
-  if(!ctx) return;
-  var d=Math.min(window.devicePixelRatio||1,2);
-  W=window.innerWidth;H=window.innerHeight;
-  fx.width=W*d;fx.height=H*d;
-  ctx.setTransform(d,0,0,d,0,0);
-}
-function spawn(init){
-  var i=KANJI[Math.floor(Math.random()*KANJI.length)];
-  var h=HUES[Math.floor(Math.random()*HUES.length)];
-  return {x:Math.random()*W,y:init?Math.random()*H:H+24,
-    vy:0.12+Math.random()*0.38,vx:(Math.random()-0.5)*0.12,
-    a:0.05+Math.random()*0.15,ch:Math.random()<0.55?i:null,
-    r:1+Math.random()*1.6,h:h,ph:Math.random()*6.28};
-}
-function fxFrame(t){
-  if(!ctx) return;
-  ctx.clearRect(0,0,W,H);
-  for(var i=0;i<parts.length;i++){
-    var p=parts[i];
-    p.y-=p.vy; p.x+=p.vx+Math.sin(t/2400+p.ph)*0.06;
-    if(p.y<-30){p.y=H+24;p.x=Math.random()*W;}
-    if(p.x<-30)p.x=W+20; if(p.x>W+30)p.x=-20;
-    ctx.fillStyle='rgba('+p.h+','+p.a.toFixed(3)+')';
-    if(p.ch){
-      ctx.font="700 "+(11+ (p.a*120)).toFixed(0)+"px 'Noto Sans JP',sans-serif";
-      ctx.fillText(p.ch,p.x,p.y);
-    }else{
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.29);ctx.fill();
+  var form=document.getElementById('waitlist'),
+      email=document.getElementById('email'),
+      msg=document.getElementById('msg');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var v=email.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){
+      msg.textContent='Please enter a valid email address.';
+      msg.className='msg err';
+      email.focus();
+      return;
     }
-  }
-  for(var j=bursts.length-1;j>=0;j--){
-    var b=bursts[j]; b.life-=0.02; b.x+=b.vx; b.y+=b.vy; b.vy+=0.05;
-    if(b.life<=0){bursts.splice(j,1);continue;}
-    ctx.fillStyle='rgba('+b.h+','+(b.life*0.9).toFixed(3)+')';
-    ctx.font="900 "+b.s+"px 'Noto Sans JP',sans-serif";
-    ctx.fillText(b.ch,b.x,b.y);
-  }
-  if(RM){return;}
-  requestAnimationFrame(fxFrame);
-}
-function initFx(){
-  if(!ctx) return;
-  fxResize(); window.addEventListener('resize',fxResize,{passive:true});
-  if(RM) return;
-  var n=Math.min(20,Math.round(W/26));
-  for(var i=0;i<n;i++)parts.push(spawn(true));
-  requestAnimationFrame(fxFrame);
-}
-function burstAt(x,y){
-  if(!ctx||RM) return;
-  for(var i=0;i<16;i++){
-    var ang=Math.random()*6.28,sp=1.2+Math.random()*2.6;
-    bursts.push({x:x,y:y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp-1.4,
-      life:0.7+Math.random()*0.3,s:11+Math.random()*15,
-      ch:KANJI[Math.floor(Math.random()*KANJI.length)],
-      h:HUES[Math.floor(Math.random()*HUES.length)]});
-  }
-}
-
-/* ---------- header ---------- */
-var hdr=$('#hdr');
-window.addEventListener('scroll',function(){
-  if(hdr)hdr.classList.toggle('scrolled',window.scrollY>10);
-},{passive:true});
-
-/* ---------- scroll reveal ---------- */
-var io=new IntersectionObserver(function(es){
-  es.forEach(function(e){
-    if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+    msg.innerHTML='<span class="ok">You\u2019re on the list! See you at launch \u2726</span>';
+    msg.className='msg';
+    form.reset();
   });
-},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
-$$('.reveal').forEach(function(el){io.observe(el);});
-
-/* ---------- scroll-to buttons + bottom nav ---------- */
-function goTo(sel){
-  var t=$(sel);
-  if(t)t.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
-}
-$$('[data-scroll]').forEach(function(b){
-  b.addEventListener('click',function(){goTo(b.getAttribute('data-scroll'));});
-});
-$$('#bnav .bi').forEach(function(b){
-  b.addEventListener('click',function(){
-    $$('#bnav .bi').forEach(function(o){o.classList.remove('on');});
-    b.classList.add('on'); goTo(b.getAttribute('data-go')); vibrate(8);
-  });
-});
-
-/* ---------- floating mint button ---------- */
-var mintBtn=$('#mintBtn');
-if(mintBtn)mintBtn.addEventListener('click',function(){
-  var r=mintBtn.getBoundingClientRect();
-  burstAt(r.left+r.width/2,r.top+r.height/2);
-  goTo('#join'); vibrate(12);
-});
-
-/* ---------- email form ---------- */
-var inkForm=$('#inkForm'),inkEmail=$('#inkEmail'),formMsg=$('#formMsg'),ctaCard=$('.cta-card');
-if(inkForm)inkForm.addEventListener('submit',function(e){
-  e.preventDefault();
-  var v=(inkEmail.value||'').trim();
-  var ok=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-  if(!ok){
-    inkEmail.classList.remove('shake'); void inkEmail.offsetWidth; inkEmail.classList.add('shake');
-    formMsg.className='form-msg bad';
-    formMsg.textContent='Hmm — that email looks off. もう一度。';
-    inkEmail.focus(); vibrate(20);
-    return;
-  }
-  var r=ctaCard.getBoundingClientRect();
-  burstAt(r.left+r.width/2,r.top+80);
-  inkForm.style.display='none';
-  formMsg.className='form-msg ok';
-  formMsg.innerHTML='Welcome in, ink-friend — watch your inbox for the first drop. <span class="jp">ようこそ！</span>';
-  toast('On the waitlist as '+esc(v)+' <span class="jp">歓迎！</span>');
-  vibrate(24);
-});
-
-/* ---------- boot ---------- */
-initFx();
 })();
 </script>
 </body>
