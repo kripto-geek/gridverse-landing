@@ -205,31 +205,6 @@ header{
 /* ink splat svg */
 .splat{position:absolute;pointer-events:none;z-index:0}
 
-/* ---------- stats ---------- */
-.stats{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:0}
-.stats-grid{
-  max-width:960px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;
-}
-.stat{
-  padding:26px 14px;text-align:center;
-  border-right:2px dashed rgba(26,26,26,.25);border-bottom:2px dashed rgba(26,26,26,.25);
-  position:relative;
-}
-.stat:nth-child(2n){border-right:none}
-.stat:nth-child(n+3){border-bottom:none}
-.stat b{
-  display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;
-  font-size:clamp(1.7rem,5.5vw,2.4rem);line-height:1.1;letter-spacing:-.02em;
-}
-.stat span{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:rgba(26,26,26,.6)}
-.stat .seal{
-  position:absolute;top:10px;right:10px;width:26px;height:26px;border:2px solid var(--red);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Noto Sans JP',sans-serif;font-weight:900;font-size:.6rem;color:var(--red);
-  transform:rotate(8deg);opacity:.7;
-}
-
 /* ---------- section headings ---------- */
 .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:34px;flex-wrap:wrap}
 .sec-head h2{
@@ -316,7 +291,7 @@ header{
 }
 
 /* ---------- footer ---------- */
-footer{border-top:2px solid var(--ink);padding:34px 0 120px;text-align:center;position:relative}
+footer{border-top:2px solid var(--ink);padding:34px 0;text-align:center;position:relative}
 footer .motto{
   font-family:'Space Grotesk','Noto Sans JP',sans-serif;font-weight:700;
   font-size:clamp(1rem,3.4vw,1.25rem);letter-spacing:-.01em;
@@ -330,70 +305,6 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
   transform:rotate(-8deg);
   color:var(--ink);background:var(--paper);
   box-shadow:3px 3px 0 rgba(26,26,26,.2);
-}
-
-/* ---------- bottom nav ---------- */
-.bottom-nav{
-  position:fixed;left:0;right:0;bottom:0;z-index:100;
-  background:rgba(245,240,232,.95);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border-top:2px solid var(--ink);
-  padding-bottom:env(safe-area-inset-bottom);
-}
-.bottom-nav ul{
-  max-width:960px;margin:0 auto;height:62px;
-  display:grid;grid-template-columns:repeat(5,1fr);
-  list-style:none;
-}
-.bottom-nav li{display:flex}
-.bottom-nav a{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  text-decoration:none;color:var(--ink);
-  font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  border-left:1px dashed rgba(26,26,26,.18);
-  transition:transform .1s;
-}
-.bottom-nav li:first-child a{border-left:none}
-.bottom-nav a svg{width:20px;height:20px}
-.bottom-nav a:active{transform:translateY(2px) scale(.94)}
-.bottom-nav a.active{color:var(--red)}
-.jit-jit{
-  margin-top:6px;font-family:'Noto Sans JP',sans-serif;font-size:.5rem;
-  font-weight:900;color:var(--red);letter-spacing:.2em;
-}
-
-/* ---------- floating mint ---------- */
-.mint-fab{
-  position:fixed;bottom:86px;right:18px;z-index:101;
-  width:58px;height:58px;border-radius:50%;
-  background:var(--red);color:#fff;border:2.5px solid var(--ink);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:5px 5px 0 var(--ink);
-  cursor:pointer;
-  animation:fab-bob 2.8s ease-in-out infinite;
-  text-decoration:none;
-}
-.mint-fab::before{
-  content:"";position:absolute;inset:-9px;border-radius:50%;
-  border:2px dashed rgba(26,26,26,.35);
-  animation:spin 14s linear infinite;
-}
-.mint-fab:active{transform:translate(5px,5px) scale(.95);box-shadow:0 0 0 var(--ink);animation-play-state:paused}
-.mint-fab .lbl{
-  position:absolute;right:66px;top:50%;transform:translateY(-50%);
-  background:var(--ink);color:var(--paper);
-  font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:700;
-  padding:6px 10px;white-space:nowrap;
-  opacity:0;pointer-events:none;transition:opacity .2s;
-  box-shadow:3px 3px 0 rgba(26,26,26,.3);
-}
-.mint-fab:hover .lbl{opacity:1}
-@keyframes fab-bob{0%,100%{translate:0 0}50%{translate:0 -6px}}
-@keyframes spin{to{rotate:360deg}}
-@keyframes pulse-dot{
-  0%{box-shadow:0 0 0 0 rgba(224,74,58,.5)}
-  70%{box-shadow:0 0 0 8px rgba(224,74,58,0)}
-  100%{box-shadow:0 0 0 0 rgba(224,74,58,0)}
 }
 
 /* ---------- reveal ---------- */
@@ -418,10 +329,6 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
   section{padding:72px 0}
   .hero{padding:90px 0 76px}
   .steps{grid-template-columns:repeat(2,1fr)}
-  .stats-grid{grid-template-columns:repeat(4,1fr)}
-  .stat{border-bottom:none;border-right:2px dashed rgba(26,26,26,.25)}
-  .stat:last-child{border-right:none}
-  .stat:nth-child(n+3){border-bottom:none}
 }
 .hero-grid{
   display:grid;grid-template-columns:1fr;gap:36px;align-items:center;
@@ -467,7 +374,7 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
   <section class="hero">
     <span class="jp-big" style="top:6px;right:-8px;font-size:clamp(5rem,16vw,9rem)" aria-hidden="true">夢</span>
     <svg class="splat" style="bottom:-10px;left:-30px;width:150px;opacity:.85" viewBox="0 0 100 100" aria-hidden="true">
-      <path d="M46 8c2 6-4 8-7 12-3 3-8 2-11 6s1 8-2 12-9 3-10 9c-1 5 4 8 8 10s4 7 8 9 8-1 12 1 6 6 11 5 6-6 10-7 9 1 11-4-2-8-1-12 5-7 3-11-7-3-11-5-3-7-7-9-8 0-12-1-5-6-2-15z" fill="#1a1a1a"/>
+      <path d="M46 8c2 6-4 8-7 12-3 3-8 2-11 6s1 8-2 12-9 3-10 9c-1 5 4 8 8 10s4 7 8 9 8-1 12 1 6-6 10-7 9 1 11-4-2-8-1-12 5-7 3-11-7-3-11-5-3-7-7-9-8 0-12-1-5-6-2-15z" fill="#1a1a1a"/>
       <circle cx="18" cy="20" r="3.5" fill="#1a1a1a"/><circle cx="82" cy="30" r="2.5" fill="#1a1a1a"/>
       <circle cx="86" cy="70" r="3" fill="#1a1a1a"/><circle cx="10" cy="80" r="2.5" fill="#1a1a1a"/>
     </svg>
@@ -491,26 +398,33 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
       <div class="hero-panel panel reveal d2" aria-hidden="true">
         <div class="tone"></div>
         <div class="sfx">ドン。</div>
-        <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 200 250" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round">
-          <path d="M100 60c-20 0-32 14-32 32 0 12 6 20 6 30s-10 18-10 30c0 24 20 38 36 38s36-14 36-38c0-12-10-20-10-30s6-18 6-30c0-18-12-32-32-32z" fill="#fff"/>
-          <path d="M100 62c-14-8-34-6-42 8-8 12-6 30 2 40" /><path d="M100 62c14-8 34-6 42 8 8 12 6 30-2 40"/>
-          <circle cx="84" cy="104" r="4" fill="#1a1a1a"/><circle cx="116" cy="104" r="4" fill="#1a1a1a"/>
-          <path d="M92 126h16l-8 10z" fill="#1a1a1a"/>
-          <path d="M60 40l14 14M140 40l-14 14M78 20v18M122 20v18"/>
-          <path d="M60 210q40 18 80 0"/>
+        <!-- manga-style panel: speed lines + dramatic silhouette -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 200 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- speed lines background -->
+          <g stroke="#1a1a1a" stroke-width="2" opacity="0.25">
+            <line x1="100" y1="0" x2="100" y2="250"/>
+            <line x1="60" y1="0" x2="60" y2="250"/>
+            <line x1="140" y1="0" x2="140" y2="250"/>
+            <line x1="20" y1="0" x2="20" y2="250"/>
+            <line x1="180" y1="0" x2="180" y2="250"/>
+            <line x1="0" y1="125" x2="200" y2="125"/>
+            <line x1="0" y1="80" x2="200" y2="80"/>
+            <line x1="0" y1="170" x2="200" y2="170"/>
+            <line x1="0" y1="40" x2="200" y2="210"/>
+            <line x1="0" y1="210" x2="200" y2="40"/>
+          </g>
+          <!-- central seal circle -->
+          <circle cx="100" cy="110" r="38" fill="#fff" stroke="#1a1a1a" stroke-width="3.5"/>
+          <circle cx="100" cy="110" r="30" fill="none" stroke="#1a1a1a" stroke-width="1.5" opacity="0.4"/>
+          <!-- stylized quill / brush silhouette -->
+          <path d="M92 92l16 16-12 12-4-20z" fill="#1a1a1a"/>
+          <path d="M88 96l4 4-4 4-4-4z" fill="#1a1a1a"/>
+          <!-- accent splashes -->
+          <circle cx="60" cy="180" r="4" fill="var(--red)" stroke="#1a1a1a" stroke-width="1.5"/>
+          <circle cx="145" cy="65" r="3" fill="var(--blue)" stroke="#1a1a1a" stroke-width="1.5"/>
         </svg>
-        <div class="jp-cap">夜光</div>
+        <div class="jp-cap">筆</div>
       </div>
-    </div>
-  </section>
-
-  <!-- STATS -->
-  <section class="stats" style="padding-left:0;padding-right:0">
-    <div class="stats-grid" style="width:100%">
-      <div class="stat reveal"><span class="seal">刊</span><b data-count="48" data-suffix="K+">0</b><span>Works</span></div>
-      <div class="stat reveal d1"><span class="seal">価</span><b data-count="12.9" data-suffix="Ξ">0</b><span>Volume</span></div>
-      <div class="stat reveal d2"><span class="seal">作</span><b data-count="3.2" data-suffix="K">0</b><span>Creators</span></div>
-      <div class="stat reveal d3"><span class="seal">衆</span><b data-count="260" data-suffix="K">0</b><span>Collectors</span></div>
     </div>
   </section>
 
@@ -521,10 +435,10 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
       <h2>How it works</h2>
     </div>
     <div class="steps">
-      <div class="step reveal"><span class="num">01</span><h3>Link wallet</h3><p>Connect your wallet in seconds. No seed phrases stored, no drama.</p><span class="step-jp">接続</span></div>
-      <div class="step reveal d1"><span class="num">02</span><h3>Mint pages</h3><p>Artists drop limited-edition chapters, artbooks & comics as collectible pages.</p><span class="step-jp">発行</span></div>
-      <div class="step reveal d2"><span class="num">03</span><h3>Collect & trade</h3><p>Buy the drops you love, read them instantly, resell when you're ready.</p><span class="step-jp">収集</span></div>
-      <div class="step reveal d3"><span class="num">04</span><h3>Earn royalties</h3><p>Artists earn on every resale — forever. The ink keeps paying its maker.</p><span class="step-jp">印税</span></div>
+      <div class="step reveal"><span class="num">01</span><h3>Artists sign up</h3><p>Indie manga artists apply to drop limited-edition chapters, artbooks & comics.</p><span class="step-jp">参加</span></div>
+      <div class="step reveal d1"><span class="num">02</span><h3>We curate the first drops</h3><p>Phase 0: 4-week test with 3 handpicked artists. Prove sell-out + resale + repeat buyers.</p><span class="step-jp">厳選</span></div>
+      <div class="step reveal d2"><span class="num">03</span><h3>Collectors buy & trade</h3><p>Buy limited editions via Stripe. Read instantly. Resell when you're done — royalties flow back to artists.</p><span class="step-jp">取引</span></div>
+      <div class="step reveal d3"><span class="num">04</span><h3>Artists earn forever</h3><p>Every resale pays the original creator. The ink keeps paying its maker.</p><span class="step-jp">印税</span></div>
     </div>
   </section>
 
@@ -556,23 +470,6 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
   </footer>
 </main>
 
-<!-- FLOATING MINT -->
-<a class="mint-fab" href="#waitlist" aria-label="Mint">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l8 5v10l-8 5-8-5V7z"/><path d="M12 22V12M20 7l-8 5-8-5"/></svg>
-  <span class="lbl">Mint a page 墨</span>
-</a>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav" aria-label="Section">
-  <ul>
-    <li><a href="#top" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 10v10h14V10"/></svg>Home</a></li>
-    <li><a href="#how"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Discover</a></li>
-    <li><a href="#waitlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v8M12 12L4 7.5"/></svg>Mint</a></li>
-    <li><a href="#how"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Bids</a></li>
-    <li><a href="#top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>Library</a></li>
-  </ul>
-</nav>
-
 <script>
 (function(){
   "use strict";
@@ -588,51 +485,8 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
     revealEls.forEach(function(el){el.classList.add("in");});
   }
 
-  /* ---------- stat count-up ---------- */
-  var stats=document.querySelectorAll(".stat b");
-  function fmt(v){
-    var dec=(v%1!==0)?1:0;
-    return v.toFixed(dec);
-  }
-  var so=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting)return;
-      so.unobserve(e.target);
-      var raw=e.target.getAttribute("data-count");
-      var target=parseFloat(raw);
-      var suffix=e.target.getAttribute("data-suffix")||"";
-      var t0=null,dur=1100;
-      function tick(ts){
-        if(!t0)t0=ts;
-        var p=Math.min((ts-t0)/dur,1);
-        var eased=1-Math.pow(1-p,3);
-        e.target.textContent=fmt(target*eased)+suffix;
-        if(p<1)requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    });
-  },{threshold:.5});
-  stats.forEach(function(s){so.observe(s);});
-
-  /* ---------- email form ---------- */
-  var form=document.getElementById("waitlistForm");
-  var input=document.getElementById("emailInput");
-  var msg=document.getElementById("formMsg");
-  var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  form.addEventListener("submit",function(ev){
-    ev.preventDefault();
-    var v=input.value.trim();
-    if(!v){show("Drop your email first — 墨！","err");return;}
-    if(!emailRe.test(v)){show("That email looks scrambled. Try again.","err");return;}
-    show("You're on the Inklist! Drop alerts incoming. ✔","ok");
-    input.value="";
-    input.disabled=true;form.querySelector("button").disabled=true;
-    form.querySelector("button").textContent="✓ On list";
-  });
-  function show(t,cls){msg.textContent=t;msg.className="msg "+cls;}
-
   /* ---------- touch feedback ---------- */
-  document.querySelectorAll(".btn, .icon-btn, .step, .bottom-nav a").forEach(function(el){
+  document.querySelectorAll(".btn, .icon-btn, .step").forEach(function(el){
     el.addEventListener("touchstart",function(){el.classList.add("touch");},{passive:true});
     el.addEventListener("touchend",function(){setTimeout(function(){el.classList.remove("touch");},160);},{passive:true});
   });
@@ -643,24 +497,6 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
     b.textContent="墨 Connecting…";b.disabled=true;
     setTimeout(function(){b.innerHTML=old;b.disabled=false;},1300);
   });
-
-  /* ---------- active bottom-nav ---------- */
-  var sectionMap={top:"Home",how:"Discover",waitlist:"Mint"};
-  var sections=Object.keys(sectionMap).map(function(id){return document.getElementById(id);}).filter(Boolean);
-  var navLinks=document.querySelectorAll(".bottom-nav a");
-  var spy=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting)return;
-      var home=e.target.id==="top";
-      navLinks.forEach(function(a){
-        // highlight: when at top highlight Home; Discover link points to #how
-        var label=a.textContent.trim();
-        var active=!home&&sectionMap[e.target.id]===label || home&&label==="Home";
-        a.classList.toggle("active",active);
-      });
-    });
-  },{rootMargin:"-40% 0px -50% 0px"});
-  sections.forEach(function(s){spy.observe(s);});
 
   /* ---------- kanji particles ---------- */
   var cvs=document.getElementById("kanjis");
