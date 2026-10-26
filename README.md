@@ -1,1 +1,1 @@
-simple inverse landing page nothing else
+simple gridverse landing page nothing else
