@@ -450,8 +450,20 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
   });
 
   /* ---------- waitlist form ---------- */
-  var WAITLIST_REPO = 'kripto-geek/gridverse-landing';
-  var WAITLIST_TOKEN = 'YOUR_GITHUB_PAT'; // repo-scoped PAT from github.com/settings/tokens
+  // set your EmailJS credentials at https://dashboard.emailjs.com
+  var EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
+  var EMAILJS_SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';
+  var EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
+
+  // load emailjs SDK dynamically
+  (function() {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js';
+    s.onload = function() {
+      window.emailjs.init(EMAILJS_PUBLIC_KEY);
+    };
+    document.head.appendChild(s);
+  })();
 
   document.getElementById('waitlistForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -467,30 +479,21 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
       return;
     }
 
+    if (!window.emailjs) {
+      msg.className = 'msg err';
+      msg.textContent = 'Signup is still loading — try again in a second.';
+      return;
+    }
+
     msg.className = 'msg';
     msg.textContent = '';
     btn.disabled = true;
 
-    var title = 'Inklist signup: ' + emailInput.value;
-    var body = 'Email: ' + emailInput.value +
-               '\nName: ' + (nameInput.value || '—') +
-               '\nHandle: ' + (handleInput.value || '—') +
-               '\nTime: ' + new Date().toISOString();
-
-    fetch('https://api.github.com/repos/' + WAITLIST_REPO + '/issues', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/vnd.github+json',
-        'Authorization': 'Basic ' + btoa('x:' + WAITLIST_TOKEN),
-        'X-GitHub-Api-Version': '2022-11-28'
-      },
-      body: JSON.stringify({ title: title, body: body, labels: ['waitlist'] })
-    })
-    .then(function(r) {
-      if (r.status === 403) { throw new Error('rate-limited'); }
-      if (r.status === 401) { throw new Error('auth-failed'); }
-      if (!r.ok) { return r.json().then(function(err){ throw err; }); }
-      return r.json();
+    window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      email: emailInput.value,
+      name: nameInput.value || '—',
+      handle: handleInput.value || '—',
+      time: new Date().toISOString()
     })
     .then(function() {
       msg.className = 'msg ok';
@@ -501,13 +504,7 @@ footer small{display:block;margin-top:10px;font-size:.75rem;color:rgba(26,26,26,
     })
     .catch(function(err) {
       msg.className = 'msg err';
-      if (err.message === 'rate-limited') {
-        msg.textContent = 'We\'re hitting rate limits. Try again in a minute or email us directly.';
-      } else if (err.message === 'auth-failed') {
-        msg.textContent = 'Signup is misconfigured. Please email us directly.';
-      } else {
-        msg.textContent = 'Something went wrong. Try again or email us directly.';
-      }
+      msg.textContent = 'Something went wrong. Try again or email us directly.';
       console.error('Waitlist submit error:', err);
     })
     .finally(function() {
